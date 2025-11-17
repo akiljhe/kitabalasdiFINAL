@@ -8,6 +8,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- (BARU) CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         .code-font { font-family: 'JetBrains Mono', monospace; }
@@ -69,16 +74,7 @@
             51%, 100% { border-color: transparent; }
         }
         
-        .code-editor {
-            background: #1e293b;
-            color: #e2e8f0;
-            border: none;
-            outline: none;
-            resize: none;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-        }
+        /* (HAPUS) Style .code-editor lama dihapus */
 
         .code-input {
             background: #1e293b;
@@ -91,10 +87,14 @@
             line-height: 1.5;
         }
         
-        .syntax-keyword { color: #f472b6; }
-        .syntax-string { color: #34d399; }
-        .syntax-number { color: #fbbf24; }
-        .syntax-comment { color: #6b7280; }
+        /* (BARU) Style untuk CodeMirror */
+        .CodeMirror {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            border-radius: 8px; /* Sesuaikan dengan style .code-editor lama */
+            height: 320px; /* Sesuaikan dengan h-80 */
+        }
         
         .achievement-badge {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -151,6 +151,7 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- Stats Dashboard -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <!-- Stats cards... (tidak berubah) -->
             <div class="bg-white rounded-lg p-6 shadow-lg border border-cyan-200">
                 <div class="flex items-center justify-between">
                     <div>
@@ -211,7 +212,7 @@
 
             <!-- Code Editor & Problem Description -->
             <div class="lg:col-span-2">
-                <!-- Problem Description Panel (BARU) -->
+                <!-- Problem Description Panel -->
                 <div id="problem-description-panel" class="bg-white rounded-lg shadow-lg p-6 mb-6">
                     <h3 id="problem-title" class="text-xl font-semibold text-slate-800 mb-2">Selamat Datang!</h3>
                     <p id="problem-description" class="text-gray-600">
@@ -233,16 +234,16 @@
                             </button>
                         </div>
                     </div>
+                    <!-- (BARU) Textarea ini akan "diambil alih" oleh CodeMirror -->
                     <textarea 
                         id="code-editor" 
-                        class="code-editor w-full h-80 p-4 rounded-lg"
+                        class="w-full"
                         placeholder="# Ketik kode Python Anda di sini..."
                         spellcheck="false"
                     ></textarea>
                     <div class="flex justify-between items-center mt-4">
-                        <div class="text-sm text-gray-400">
-                            <span id="line-count">Baris: 1</span>
-                        </div>
+                         <!-- (HAPUS) Line counter lama dihapus -->
+                        <div></div> <!-- Placeholder agar tombol Run tetap di kanan -->
                         <div class="flex space-x-2">
                             <button onclick="runCode()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
                                 ▶ Run Code
@@ -254,7 +255,7 @@
 
             <!-- Input/Output Panel -->
             <div class="lg:col-span-1">
-                <!-- Input Panel (BARU) -->
+                <!-- Input Panel -->
                 <div class="bg-slate-700 rounded-lg p-6 mb-6">
                     <h3 class="text-lg font-semibold text-white mb-4">Input Data</h3>
                     <textarea 
@@ -312,9 +313,14 @@
     </footer>
 
     <!-- Pyodide for Python execution -->
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js" defer></script>
+
+    <!-- (BARU) CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js" defer></script>
     
-    <script src="main.js"></script>
+    <script src="main.js" defer></script>
     
     <script>
         // Initialize the application
@@ -324,12 +330,19 @@
             loadAchievements();
             updateStats();
             
-            // Add line counter
-            const editor = document.getElementById('code-editor');
-            editor.addEventListener('input', function() {
-                const lines = this.value.split('\n').length;
-                document.getElementById('line-count').textContent = `Baris: ${lines}`;
+            // (BARU) Inisialisasi CodeMirror
+            // Variabel codeEditorInstance dideklarasikan di main.js
+            codeEditorInstance = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
+                lineNumbers: true,        // Tampilkan nomor baris
+                mode: 'python',           // Set mode ke Python
+                theme: 'dracula',         // Gunakan tema Dracula
+                autoCloseBrackets: true,  // Otomatis tutup kurung
+                lineWrapping: true        // Otomatis wrap baris panjang
             });
+            // Set ukuran editor secara manual (opsional, tapi disarankan)
+            codeEditorInstance.setSize(null, '320px');
+
+            // (HAPUS) Line counter lama
             
             // Add typing animation
             anime({
@@ -339,17 +352,15 @@
                 easing: 'easeInOutQuad'
             });
 
-            // (BARU) Cek local storage untuk soal yang dipilih dari problems.html
+            // Cek local storage untuk soal yang dipilih dari problems.html
             const redirectedProblem = localStorage.getItem('selectedProblem');
             if (redirectedProblem) {
                 try {
                     const problem = JSON.parse(redirectedProblem);
                     if (problem && problem.id) {
-                         // Panggil selectProblem setelah inisialisasi
-                         // Kita beri sedikit delay untuk memastikan semua siap
                         setTimeout(() => {
                             selectProblem(problem.id);
-                        }, 100);
+                        }, 100); // Beri waktu agar CodeMirror selesai inisialisasi
                     }
                     localStorage.removeItem('selectedProblem');
                 } catch (e) {
