@@ -645,24 +645,41 @@ async function runCode() {
         }
         
     } catch (error) {
-        // (BARU) Deteksi EOFError dan OSError untuk pesan yang lebih baik
+        // (DIPERBARUI) Penanganan error yang lebih spesifik
         const errorMessage = error.message.toString();
-        if (errorMessage.includes("EOFError") || errorMessage.includes("OSError: [Errno 29]")) {
+
+        if (errorMessage.includes("EOFError")) {
+            // Ini terjadi jika program memanggil input() tapi input sudah habis
             outputDiv.innerHTML = `<div class="text-red-400">
                 <strong>Error: Input Tidak Cukup</strong><br>
-                Program Anda membutuhkan input, tapi kotak 'Input Data' kosong atau inputnya tidak lengkap.<br><br>
-                Silakan periksa kembali input Anda (misal: "9" di baris 1, "root" di baris 2).
+                Program Anda membutuhkan lebih banyak input daripada yang diberikan.<br><br>
+                Misal: Soal "Power or Root" butuh 2 baris input, tapi Anda hanya memberi 1.
             </div>`;
-            showNotification('Input tidak lengkap atau kosong', 'warning');
+            showNotification('Input tidak lengkap', 'warning');
+
         } else if (errorMessage.includes("ValueError: invalid literal for int()")) {
+            // Ini terjadi jika int() mendapat teks, misal int("hello") atau int("")
              outputDiv.innerHTML = `<div class="text-red-400">
                 <strong>Error: Input Salah Tipe</strong><br>
-                Program mencoba mengubah input menjadi angka (int), tapi input yang diberikan bukan angka.<br><br>
+                Program mencoba mengubah input menjadi angka (int), tapi input yang diberikan bukan angka (atau kosong).<br><br>
                 Contoh: Anda memberi input 'hello' padahal program butuh '123'.
             </div>`;
-            showNotification('Input bukan angka', 'warning');
+            showNotification('Input bukan angka atau kosong', 'warning');
+
+        } else if (errorMessage.includes("OSError: [Errno 29]")) {
+            // Ini adalah error I/O yang seharusnya sudah ditangani setStdin
+            // Jika masih muncul, ini adalah fallback
+             outputDiv.innerHTML = `<div class="text-red-400">
+                <strong>Error: I/O Problem</strong><br>
+                Terjadi masalah saat membaca input. Ini bisa jadi bug internal.<br><br>
+                Silakan coba 'Clear Output' dan 'Run Code' lagi.
+                <br><br>
+                <em class="text-xs">Detail: ${escapeHtml(errorMessage)}</em>
+            </div>`;
+            showNotification('Terjadi error I/O', 'error');
+
         } else {
-            // Error lain akan ditampilkan seperti biasa
+            // Error lain akan ditampilkan apa adanya
             outputDiv.innerHTML = `<div class="text-red-400">Error: ${escapeHtml(errorMessage)}</div>`;
             showNotification('Terjadi error saat menjalankan kode', 'error');
         }
