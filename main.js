@@ -6,6 +6,9 @@ let userProgress = JSON.parse(localStorage.getItem('pythonProgress') || '{}');
 // (BARU) Variabel global untuk menampung instance CodeMirror
 let codeEditorInstance = null;
 
+// (BARU) Variabel untuk menyimpan aksi konfirmasi modal
+let onConfirmAction = null;
+
 // Problem definitions (tidak berubah)
 const problems = [
     {
@@ -507,8 +510,8 @@ function loadProblems() {
 function selectProblem(problemId) {
     currentProblem = problems.find(p => p.id === problemId);
     if (currentProblem && codeEditorInstance) { // Pastikan CodeMirror sudah siap
-        // (BARU) Gunakan .setValue() untuk CodeMirror
-        codeEditorInstance.setValue(currentProblem.template);
+        // (DIPERBARUI) Jangan isi template, isi string kosong atau komentar
+        codeEditorInstance.setValue(`# Soal: ${currentProblem.title}\n# Mulai kerjakan di sini...`);
         
         document.getElementById('problem-title').textContent = currentProblem.title;
         document.getElementById('problem-description').textContent = currentProblem.description;
@@ -550,9 +553,15 @@ function selectProblem(problemId) {
 // Load template code (DIPERBARUI untuk CodeMirror)
 function loadTemplate() {
     if (currentProblem && codeEditorInstance) {
-        // (BARU) Gunakan .setValue() untuk CodeMirror
-        codeEditorInstance.setValue(currentProblem.template);
-        showNotification('Template dimuat', 'info');
+        // (BARU) Tampilkan konfirmasi
+        showConfirmationModal(
+            "Yakin ingin memuat template? Ini akan menimpa kode Anda saat ini.",
+            () => {
+                // Aksi ini akan dijalankan jika user klik 'Ya'
+                codeEditorInstance.setValue(currentProblem.template);
+                showNotification('Template dimuat', 'info');
+            }
+        );
     } else {
         showNotification('Pilih soal terlebih dahulu', 'warning');
     }
@@ -566,6 +575,39 @@ function clearEditor() {
         showNotification('Editor dikosongkan', 'info');
     }
 }
+
+// (BARU) Fungsi untuk Modal Konfirmasi
+function showConfirmationModal(message, confirmAction) {
+    const modal = document.getElementById('confirmation-modal');
+    const modalContent = document.getElementById('modal-content');
+    const messageEl = document.getElementById('modal-message');
+    if (modal && messageEl && modalContent) {
+        messageEl.textContent = message;
+        onConfirmAction = confirmAction; // Simpan aksi yang akan dijalankan
+        modal.style.display = 'flex';
+        // Trigger transisi
+        setTimeout(() => {
+            modalContent.classList.add('scale-100', 'opacity-100');
+            modalContent.classList.remove('scale-95', 'opacity-0');
+        }, 10);
+    }
+}
+
+function hideConfirmationModal() {
+    const modal = document.getElementById('confirmation-modal');
+    const modalContent = document.getElementById('modal-content');
+    if (modal && modalContent) {
+        // Trigger transisi keluar
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        
+        setTimeout(() => {
+            modal.style.display = 'none';
+            onConfirmAction = null; // Hapus aksi
+        }, 200); // Sesuaikan dengan durasi transisi
+    }
+}
+
 
 // Clear output
 function clearOutput() {
@@ -905,6 +947,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } catch (e) {
         console.error("Gagal memuat animasi:", e);
+    }
+
+    // (BARU) Tambahkan event listener untuk tombol modal
+    const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+    const modalCancelBtn = document.getElementById('modal-cancel-btn');
+    const modalOverlay = document.getElementById('confirmation-modal');
+
+    if(modalConfirmBtn) {
+        modalConfirmBtn.addEventListener('click', () => {
+            if (typeof onConfirmAction === 'function') {
+                onConfirmAction(); // Jalankan aksi yang disimpan
+            }
+            hideConfirmationModal(); // Tutup modal
+        });
+    }
+    
+    if(modalCancelBtn) {
+        modalCancelBtn.addEventListener('click', hideConfirmationModal);
+    }
+
+    // (BARU) Tutup modal jika klik di luar konten modal (overlay)
+    if(modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                hideConfirmationModal();
+            }
+        });
     }
 
     // 4. Cek local storage untuk soal yang dipilih
