@@ -496,8 +496,20 @@ async function runCode() {
         }
         
     } catch (error) {
-        outputDiv.innerHTML = `<div class="text-red-400">Error: ${escapeHtml(error.message)}</div>`;
-        showNotification('Terjadi error saat menjalankan kode', 'error');
+        // (BARU) Deteksi EOFError untuk pesan yang lebih baik
+        const errorMessage = error.message.toString();
+        if (errorMessage.includes("EOFError")) {
+            outputDiv.innerHTML = `<div class="text-red-400">
+                <strong>Error: Input Kosong</strong><br>
+                Program Anda membutuhkan input, tapi kotak 'Input Data' kosong.<br><br>
+                Silakan ketik input (misal: angka '7') di kotak 'Input Data' lalu coba jalankan lagi.
+            </div>`;
+            showNotification('Input tidak boleh kosong', 'warning');
+        } else {
+            // Error lain akan ditampilkan seperti biasa
+            outputDiv.innerHTML = `<div class="text-red-400">Error: ${escapeHtml(errorMessage)}</div>`;
+            showNotification('Terjadi error saat menjalankan kode', 'error');
+        }
     }
 }
 
