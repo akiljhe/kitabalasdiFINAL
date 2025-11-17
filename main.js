@@ -13,6 +13,13 @@ const problems = [
         title: "Odd, Even, or Zero",
         difficulty: "beginner",
         description: "Buat program untuk menentukan apakah sebuah bilangan: 'Odd' jika ganjil, 'Even' jika genap, 'Zero' jika 0",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Satu bilangan integer.",
+        outputFormat: "Cetak salah satu: 'Odd', 'Even', atau 'Zero'.",
+        sampleInput: "0",
+        sampleOutput: "Zero",
+        explanation: "Bilangan 0 adalah nol, bukan ganjil atau genap.",
+        hint: "Gunakan operator modulo (%) untuk memeriksa apakah bilangan habis dibagi 2.",
         template: `# Odd, Even, or Zero
 number = int(input())
 
@@ -34,6 +41,13 @@ else:
         title: "Grade Classification",
         difficulty: "beginner",
         description: "Input nilai ujian (0-100). Jika tidak valid, cetak 'Invalid'. Jika valid, tentukan grade A-E",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Satu bilangan integer.",
+        outputFormat: "Satu huruf grade atau 'Invalid'.",
+        sampleInput: "120",
+        sampleOutput: "Invalid",
+        explanation: "Nilai 120 berada di luar rentang 0-100, maka outputnya 'Invalid'.",
+        hint: "Validasi input terlebih dahulu sebelum menentukan grade.",
         template: `# Grade Classification
 nilai = int(input())
 
@@ -61,6 +75,13 @@ else:
         title: "Print Numbers With Step",
         difficulty: "beginner",
         description: "Cetak angka dari 1 sampai N, tetapi lewati setiap bilangan kelipatan 4",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Integer N.",
+        outputFormat: "Setiap angka yang tidak termasuk kelipatan 4 dicetak di baris baru.",
+        sampleInput: "10",
+        sampleOutput: "1\n2\n3\n5\n6\n7\n9\n10",
+        explanation: "Angka 4 dan 8 adalah kelipatan 4, jadi tidak dicetak.",
+        hint: "Gunakan loop dan operator modulo untuk melewati kelipatan 4.",
         template: `# Print Numbers With Step
 N = int(input())
 
@@ -77,6 +98,13 @@ for i in range(1, N + 1):
         title: "Repeat Word",
         difficulty: "beginner",
         description: "Cetak kata 'Python' sebanyak N kali dengan nomor urut di depan",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Integer N.",
+        outputFormat: "N baris dengan format: <nomor>. Python",
+        sampleInput: "3",
+        sampleOutput: "1. Python\n2. Python\n3. Python",
+        explanation: "Kata 'Python' dicetak 3 kali dengan nomor urut 1, 2, dan 3.",
+        hint: "Gunakan loop dan f-string untuk format output yang benar.",
         template: `# Repeat Word
 N = int(input())
 
@@ -92,6 +120,13 @@ for i in range(1, N + 1):
         title: "Multiples of 3 and 5",
         difficulty: "beginner",
         description: "Cetak semua angka dari 1 sampai N yang merupakan kelipatan 3 atau 5",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Integer N.",
+        outputFormat: "Angka valid dicetak baris per baris.",
+        sampleInput: "15",
+        sampleOutput: "3\n5\n6\n9\n10\n12\n15",
+        explanation: "Semua angka yang habis dibagi 3 atau 5 dicetak.",
+        hint: "Gunakan operator modulo dan kondisi OR (or) untuk memeriksa kedua kondisi.",
         template: `# Multiples of 3 and 5
 N = int(input())
 
@@ -108,6 +143,13 @@ for i in range(1, N + 1):
         title: "Square & Diagonal",
         difficulty: "intermediate",
         description: "Untuk persegi bersisi S, hitung luas, keliling, dan panjang diagonal",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Integer S.",
+        outputFormat: "Luas: X\nKeliling: Y\nDiagonal: Z",
+        sampleInput: "5",
+        sampleOutput: "Luas: 25\nKeliling: 20\nDiagonal: 7.07",
+        explanation: "Luas = S², Keliling = 4S, Diagonal = S√2",
+        hint: "Gunakan modul math untuk fungsi akar kuadrat (sqrt).",
         template: `# Square & Diagonal
 import math
 
@@ -130,6 +172,13 @@ print(f"Diagonal: {diagonal:.2f}")`,
         title: "Modulo Comparison",
         difficulty: "intermediate",
         description: "Diberikan dua angka A dan B, bandingkan A%B dan B%A, cetak mana yang lebih besar",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Satu baris dua integer A dan B.",
+        outputFormat: "Cetak salah satu: 'A', 'B', atau 'Equal'.",
+        sampleInput: "10 6",
+        sampleOutput: "B",
+        explanation: "10%6 = 4, 6%10 = 6. Karena 6 > 4, outputnya 'B'.",
+        hint: "Hitung kedua modulo terlebih dahulu, kemudian bandingkan hasilnya.",
         template: `# Modulo Comparison
 A, B = map(int, input().split())
 
@@ -154,6 +203,13 @@ else:
         title: "Power or Root",
         difficulty: "intermediate",
         description: "Diberikan bilangan X dan perintah C: 'pow' untuk X² atau 'root' untuk akar kuadrat X",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Dua baris: Integer X, String C",
+        outputFormat: "Hasil sesuai perintah.",
+        sampleInput: "9\nroot",
+        sampleOutput: "3.00",
+        explanation: "Perintah 'root' menghitung akar kuadrat 9 = 3.00",
+        hint: "Gunakan percabangan if-elif untuk memilih operasi yang sesuai.",
         template: `# Power or Root
 import math
 
@@ -176,6 +232,13 @@ else:
         title: "Fizz for Five",
         difficulty: "intermediate",
         description: "Cetak angka 1-N, jika kelipatan 5 cetak 'Fizz', selainnya cetak angka",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Integer N.",
+        outputFormat: "Setiap baris berisi angka atau teks 'Fizz'.",
+        sampleInput: "10",
+        sampleOutput: "1\n2\n3\n4\nFizz\n6\n7\n8\n9\nFizz",
+        explanation: "Angka 5 dan 10 adalah kelipatan 5, jadi diganti dengan 'Fizz'.",
+        hint: "Ini adalah varian dari FizzBuzz classik, fokus pada kelipatan 5 saja.",
         template: `# Fizz for Five
 N = int(input())
 
@@ -194,6 +257,13 @@ for i in range(1, N + 1):
         title: "Maximum of Three",
         difficulty: "intermediate",
         description: "Diberikan 3 angka, tentukan angka terbesar tanpa menggunakan fungsi max()",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Tiga integer dipisahkan spasi.",
+        outputFormat: "Satu angka terbesar.",
+        sampleInput: "12 7 30",
+        sampleOutput: "30",
+        explanation: "Dari angka 12, 7, dan 30, angka terbesar adalah 30.",
+        hint: "Gunakan variabel sementara untuk menyimpan nilai maksimum sementara.",
         template: `# Maximum of Three
 a, b, c = map(int, input().split())
 
@@ -215,6 +285,13 @@ print(maks)`,
         title: "Sum of Even Numbers",
         difficulty: "intermediate",
         description: "Hitung total semua angka genap dari 1 sampai N",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Integer N.",
+        outputFormat: "Satu angka: total bilangan genap.",
+        sampleInput: "10",
+        sampleOutput: "30",
+        explanation: "Angka genap dari 1-10: 2+4+6+8+10 = 30",
+        hint: "Gunakan variabel untuk mengakumulasi total dan operator modulo untuk memeriksa genap.",
         template: `# Sum of Even Numbers
 N = int(input())
 
@@ -235,6 +312,13 @@ print(total)`,
         title: "Star Pattern",
         difficulty: "advanced",
         description: "Cetak pola segitiga menggunakan karakter * dengan tinggi N",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Integer N.",
+        outputFormat: "Pola berbentuk segitiga dengan karakter *.",
+        sampleInput: "4",
+        sampleOutput: "*\n**\n***\n****",
+        explanation: "Setiap baris mencetak bintang sebanyak nomor barisnya.",
+        hint: "Gunakan loop dan string multiplication untuk mencetak bintang berulang.",
         template: `# Star Pattern
 N = int(input())
 
@@ -250,6 +334,13 @@ for i in range(1, N + 1):
         title: "Count Multiples",
         difficulty: "advanced",
         description: "Hitung berapa banyak angka dari 1 sampai N yang merupakan kelipatan 2 dan 7",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Integer N.",
+        outputFormat: "Jumlah angka yang merupakan kelipatan 14.",
+        sampleInput: "50",
+        sampleOutput: "3",
+        explanation: "Kelipatan 14 dari 1-50: 14, 28, 42 (total 3 angka)",
+        hint: "Kelipatan 2 dan 7 sama dengan kelipatan KPK(2,7) = 14.",
         template: `# Count Multiples
 N = int(input())
 
@@ -270,6 +361,13 @@ print(count)`,
         title: "Valid Usernames",
         difficulty: "advanced",
         description: "Filter username yang valid menggunakan regex: diawali huruf, boleh huruf & angka, minimal 3 karakter",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Baris pertama: integer N, diikuti N username",
+        outputFormat: "Username valid satu per baris, atau 'No valid username'",
+        sampleInput: "5\njoy123\nandi_\nmaria99\n_user\ntest007",
+        sampleOutput: "joy123\nmaria99\ntest007",
+        explanation: "Username valid: joy123, maria99, test007 (diawali huruf, minimal 3 karakter, hanya huruf & angka)",
+        hint: "Gunakan regex dengan pola: ^[a-zA-Z][a-zA-Z0-9]{2,}$",
         template: `# Valid Usernames
 import re
 
@@ -299,6 +397,13 @@ else:
         title: "Extract Numbers",
         difficulty: "advanced",
         description: "Ekstrak angka dari string, hitung total, rata-rata, dan nilai terbesar",
+        // (BARU) Menambahkan detail soal
+        inputFormat: "Baris pertama: integer N, diikuti N baris string",
+        outputFormat: "Total: X\nAverage: Y\nMax: Z",
+        sampleInput: "6\nRp25000\nharga:30000\n50k\nabc\n120000\nid:5000",
+        sampleOutput: "Total: 230000\nAverage: 57500\nMax: 120000",
+        explanation: "Angka yang diekstrak: 25000, 30000, 50, 120000, 5000. Total=230000, Rata-rata=57500, Maks=120000",
+        hint: "Gunakan regex untuk menemukan semua angka dalam string.",
         template: `# Extract Numbers
 import re
 
@@ -408,6 +513,33 @@ function selectProblem(problemId) {
         document.getElementById('problem-title').textContent = currentProblem.title;
         document.getElementById('problem-description').textContent = currentProblem.description;
         
+        // (BARU) Mengisi detail soal
+        const detailsContainer = document.getElementById('problem-details-container');
+        if (detailsContainer) {
+            detailsContainer.innerHTML = `
+                <div>
+                    <h4 class="font-semibold text-slate-700 mb-1">Format Input:</h4>
+                    <p class="text-gray-600 text-sm">${currentProblem.inputFormat || 'Tidak ada spesifikasi'}</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-slate-700 mb-1">Format Output:</h4>
+                    <p class="text-gray-600 text-sm">${currentProblem.outputFormat || 'Tidak ada spesifikasi'}</p>
+                </div>
+                ${currentProblem.sampleInput ? `
+                <div class="mt-4">
+                    <h4 class="font-semibold text-slate-700 mb-1">Contoh Input:</h4>
+                    <pre class="bg-slate-100 p-2 rounded text-sm code-font">${escapeHtml(currentProblem.sampleInput)}</pre>
+                </div>
+                ` : ''}
+                ${currentProblem.sampleOutput ? `
+                <div>
+                    <h4 class="font-semibold text-slate-700 mb-1">Contoh Output:</h4>
+                    <pre class="bg-slate-100 p-2 rounded text-sm code-font">${escapeHtml(currentProblem.sampleOutput)}</pre>
+                </div>
+                ` : ''}
+            `;
+        }
+
         document.getElementById('code-input').value = '';
         clearOutput();
 
@@ -465,8 +597,24 @@ async function runCode() {
     try {
         outputDiv.innerHTML = '<div class="text-yellow-400">⏳ Menjalankan kode...</div>';
         
+        // (BARU) Penanganan input multi-baris yang lebih baik
+        const inputLines = inputText.split('\n');
+        let lineIndex = 0;
+        
         pyodide.setStdin({
-            stdin: () => inputText
+            stdin: () => {
+                if (lineIndex < inputLines.length) {
+                    const line = inputLines[lineIndex];
+                    lineIndex++;
+                    // Menambahkan newline di akhir sangat penting
+                    // agar `input()` di Python tahu kapan harus berhenti membaca
+                    return line + '\n';
+                } else {
+                    // Mengembalikan null akan memicu EOFError jika program
+                    // mencoba membaca lebih banyak input daripada yang disediakan
+                    return null;
+                }
+            }
         });
 
         let output = '';
@@ -476,7 +624,8 @@ async function runCode() {
             }
         });
         
-        pyodide.runPython("import sys; sys.stdout.flush()");
+        // Hapus flush, mungkin tidak perlu dan bisa jadi sumber masalah
+        // pyodide.runPython("import sys; sys.stdout.flush()");
 
         await pyodide.runPythonAsync(code);
         
@@ -496,15 +645,22 @@ async function runCode() {
         }
         
     } catch (error) {
-        // (BARU) Deteksi EOFError untuk pesan yang lebih baik
+        // (BARU) Deteksi EOFError dan OSError untuk pesan yang lebih baik
         const errorMessage = error.message.toString();
-        if (errorMessage.includes("EOFError")) {
+        if (errorMessage.includes("EOFError") || errorMessage.includes("OSError: [Errno 29]")) {
             outputDiv.innerHTML = `<div class="text-red-400">
-                <strong>Error: Input Kosong</strong><br>
-                Program Anda membutuhkan input, tapi kotak 'Input Data' kosong.<br><br>
-                Silakan ketik input (misal: angka '7') di kotak 'Input Data' lalu coba jalankan lagi.
+                <strong>Error: Input Tidak Cukup</strong><br>
+                Program Anda membutuhkan input, tapi kotak 'Input Data' kosong atau inputnya tidak lengkap.<br><br>
+                Silakan periksa kembali input Anda (misal: "9" di baris 1, "root" di baris 2).
             </div>`;
-            showNotification('Input tidak boleh kosong', 'warning');
+            showNotification('Input tidak lengkap atau kosong', 'warning');
+        } else if (errorMessage.includes("ValueError: invalid literal for int()")) {
+             outputDiv.innerHTML = `<div class="text-red-400">
+                <strong>Error: Input Salah Tipe</strong><br>
+                Program mencoba mengubah input menjadi angka (int), tapi input yang diberikan bukan angka.<br><br>
+                Contoh: Anda memberi input 'hello' padahal program butuh '123'.
+            </div>`;
+            showNotification('Input bukan angka', 'warning');
         } else {
             // Error lain akan ditampilkan seperti biasa
             outputDiv.innerHTML = `<div class="text-red-400">Error: ${escapeHtml(errorMessage)}</div>`;
@@ -626,7 +782,7 @@ function showNotification(message, type = 'info') {
     }, 100);
     
     setTimeout(() => {
-        notification.classList.add('translate-x-full');
+        notification.classList.add('translatex-full');
         setTimeout(() => {
             if (document.body.contains(notification)) {
                 document.body.removeChild(notification);
@@ -639,13 +795,14 @@ function showNotification(message, type = 'info') {
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
+    // (DIPERBARUI) Ubah newline menjadi <br> agar format output benar
     return div.innerHTML.replace(/\n/g, '<br>'); 
 }
 
 // (HAPUS) Fungsi highlightSyntax tidak diperlukan lagi
 // CodeMirror menanganinya secara otomatis
 
-// Add some interactive animations
+// (DIPINDAHKAN) Add some interactive animations
 document.addEventListener('DOMContentLoaded', function() {
     // Animate stats cards
     anime({
@@ -658,4 +815,64 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // ... (Animasi hover problem-card bisa ditambahkan kembali di sini jika diinginkan)
+});
+
+
+// (BARU) Logika inisialisasi dari index.html dipindahkan ke sini
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Panggil inisialisasi utama
+    initializeApp();
+    loadProblems();
+    loadAchievements();
+    updateStats();
+    
+    // 2. Inisialisasi CodeMirror
+    try {
+        codeEditorInstance = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
+            lineNumbers: true,        // Tampilkan nomor baris
+            mode: 'python',           // Set mode ke Python
+            theme: 'dracula',         // Gunakan tema Dracula
+            autoCloseBrackets: true,  // Otomatis tutup kurung
+            lineWrapping: true        // Otomatis wrap baris panjang
+        });
+        // Set ukuran editor secara manual (opsional, tapi disarankan)
+        codeEditorInstance.setSize(null, '320px');
+    } catch (e) {
+        console.error("Gagal inisialisasi CodeMirror:", e);
+        showNotification("Gagal memuat editor kode!", "error");
+    }
+
+    // 3. Animasi
+    try {
+        anime({
+            targets: '.typing-animation',
+            opacity: [0, 1],
+            duration: 2000,
+            easing: 'easeInOutQuad'
+        });
+    } catch (e) {
+        console.error("Gagal memuat animasi:", e);
+    }
+
+    // 4. Cek local storage untuk soal yang dipilih
+    const redirectedProblem = localStorage.getItem('selectedProblem');
+    if (redirectedProblem) {
+        try {
+            const problem = JSON.parse(redirectedProblem);
+            if (problem && problem.id) {
+                setTimeout(() => {
+                    // Cek lagi jika codeEditorInstance sudah siap
+                    if (codeEditorInstance) {
+                        selectProblem(problem.id);
+                    } else {
+                        console.warn("CodeMirror belum siap untuk memuat soal.");
+                    }
+                }, 100); // Beri waktu agar CodeMirror selesai inisialisasi
+            }
+            localStorage.removeItem('selectedProblem');
+        } catch (e) {
+            console.error("Gagal memuat soal dari redirect:", e);
+            localStorage.removeItem('selectedProblem');
+        }
+    }
 });
