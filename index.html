@@ -215,10 +215,14 @@
                 <!-- Problem Description Panel -->
                 <div id="problem-description-panel" class="bg-white rounded-lg shadow-lg p-6 mb-6">
                     <h3 id="problem-title" class="text-xl font-semibold text-slate-800 mb-2">Selamat Datang!</h3>
-                    <p id="problem-description" class="text-gray-600">
+                    <p id="problem-description" class="text-gray-600 mb-4">
                         Pilih soal dari daftar di sebelah kiri untuk memulai. 
                         Deskripsi soal akan muncul di sini.
                     </p>
+                    <!-- (BARU) Container untuk detail soal -->
+                    <div id="problem-details-container" class="space-y-4">
+                        <!-- Konten ini akan diisi oleh main.js -->
+                    </div>
                 </div>
 
                 <!-- Code Editor -->
@@ -238,7 +242,7 @@
                     <textarea 
                         id="code-editor" 
                         class="w-full"
-                        placeholder="# Ketik kode Python Anda di sini..."
+                        placeholder=""
                         spellcheck="false"
                     ></textarea>
                     <div class="flex justify-between items-center mt-4">
@@ -261,7 +265,7 @@
                     <textarea 
                         id="code-input" 
                         class="code-input w-full h-24 p-4 rounded-lg"
-                        placeholder="Ketik input untuk program Anda di sini (jika ada)..."
+                        placeholder=""
                         spellcheck="false"
                     ></textarea>
                 </div>
@@ -323,53 +327,9 @@
     <script src="main.js" defer></script>
     
     <script>
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            loadProblems();
-            loadAchievements();
-            updateStats();
-            
-            // (BARU) Inisialisasi CodeMirror
-            // Variabel codeEditorInstance dideklarasikan di main.js
-            codeEditorInstance = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
-                lineNumbers: true,        // Tampilkan nomor baris
-                mode: 'python',           // Set mode ke Python
-                theme: 'dracula',         // Gunakan tema Dracula
-                autoCloseBrackets: true,  // Otomatis tutup kurung
-                lineWrapping: true        // Otomatis wrap baris panjang
-            });
-            // Set ukuran editor secara manual (opsional, tapi disarankan)
-            codeEditorInstance.setSize(null, '320px');
-
-            // (HAPUS) Line counter lama
-            
-            // Add typing animation
-            anime({
-                targets: '.typing-animation',
-                opacity: [0, 1],
-                duration: 2000,
-                easing: 'easeInOutQuad'
-            });
-
-            // Cek local storage untuk soal yang dipilih dari problems.html
-            const redirectedProblem = localStorage.getItem('selectedProblem');
-            if (redirectedProblem) {
-                try {
-                    const problem = JSON.parse(redirectedProblem);
-                    if (problem && problem.id) {
-                        setTimeout(() => {
-                            selectProblem(problem.id);
-                        }, 100); // Beri waktu agar CodeMirror selesai inisialisasi
-                    }
-                    localStorage.removeItem('selectedProblem');
-                } catch (e) {
-                    console.error("Gagal memuat soal dari redirect:", e);
-                    localStorage.removeItem('selectedProblem');
-                }
-            }
-        });
+        // (DIPINDAHKAN) Sebagian besar logika inisialisasi dipindahkan ke main.js
         
+        // Fungsi global ini boleh tetap di sini
         function scrollToEditor() {
             document.getElementById('editor-section').scrollIntoView({ 
                 behavior: 'smooth' 
