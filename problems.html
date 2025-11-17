@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Problems - 15+ Latihan Pemrograman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .code-font { font-family: 'JetBrains Mono', monospace; }
+        .hero-bg { background-image: url('resources/hero-coding.jpg'); }
+        .pattern-bg { background-image: url('resources/bg-pattern.svg'); }
+        
+        .problem-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.2);
+            border-color: #06b6d4;
+        }
+        
+        .difficulty-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+        
+        .beginner { background-color: #dcfce7; color: #166534; }
+        .intermediate { background-color: #fef3c7; color: #92400e; }
+        .advanced { background-color: #fee2e2; color: #991b1b; }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #06b6d4;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #06b6d4;
+            border-radius: 1px;
+        }
+        
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background: #06b6d4;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .code-example {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 pattern-bg min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <img src="resources/python-logo.png" alt="Python Logo" class="w-8 h-8">
+                    <span class="text-xl font-bold text-slate-800">Python Learning</span>
+                </div>
+                <div class="flex space-x-8">
+                    <a href="index.html" class="nav-link text-slate-700 font-medium">Compiler</a>
+                    <a href="problems.html" class="nav-link active text-slate-700 font-medium">Latihan</a>
+                    <a href="tutorial.html" class="nav-link text-slate-700 font-medium">Tutorial</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg bg-cover bg-center py-16 relative">
+        <div class="absolute inset-0 bg-slate-900/60"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                15+ Latihan Python
+            </h1>
+            <p class="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+                Mulai dari dasar hingga advanced, tingkatkan kemampuan pemrograman Python Anda 
+                dengan berbagai macam soal dan tantangan menarik.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="scrollToProblems()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                    Mulai Belajar
+                </button>
+                <a href="index.html" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                    Coba Compiler
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Filter Section -->
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-slate-800 mb-6">Pilih Tantangan Anda</h2>
+            <div class="flex justify-center space-x-4 mb-8">
+                <button onclick="filterProblems('all')" class="filter-btn active bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold">
+                    Semua
+                </button>
+                <button onclick="filterProblems('beginner')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold">
+                    Pemula
+                </button>
+                <button onclick="filterProblems('intermediate')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold">
+                    Menengah
+                </button>
+                <button onclick="filterProblems('advanced')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold">
+                    Lanjutan
+                </button>
+            </div>
+        </div>
+
+        <!-- Problems Grid -->
+        <div id="problems-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <!-- Problems will be loaded here -->
+        </div>
+
+        <!-- Progress Section -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-12">
+            <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">Progress Belajar</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="w-24 h-24 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl" id="progress-percentage">0%</span>
+                    </div>
+                    <h4 class="font-semibold text-slate-800">Progress Keseluruhan</h4>
+                    <p class="text-gray-600">Total soal yang diselesaikan</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl" id="streak-count">0</span>
+                    </div>
+                    <h4 class="font-semibold text-slate-800">Streak Harian</h4>
+                    <p class="text-gray-600">Hari berturut-turut belajar</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl" id="badges-count">0</span>
+                    </div>
+                    <h4 class="font-semibold text-slate-800">Badge Terkumpul</h4>
+                    <p class="text-gray-600">Prestasi yang diperoleh</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg p-8 text-white">
+            <div class="max-w-4xl mx-auto text-center">
+                <h3 class="text-2xl font-bold mb-4">💡 Tips Belajar Efektif</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🎯</div>
+                        <h4 class="font-semibold mb-2">Mulai dari Dasar</h4>
+                        <p class="text-sm opacity-90">Ikuti urutan soal dari pemula ke lanjutan untuk pemahaman yang baik</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🔍</div>
+                        <h4 class="font-semibold mb-2">Eksperimen</h4>
+                        <p class="text-sm opacity-90">Jangan takut mencoba berbagai cara penyelesaian</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">📚</div>
+                        <h4 class="font-semibold mb-2">Gunakan Tutorial</h4>
+                        <p class="text-sm opacity-90">Manfaatkan panduan tutorial untuk konsep yang belum dipahami</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Problem Detail Modal -->
+    <div id="problem-modal" class="modal">
+        <div class="modal-content">
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h2 id="modal-title" class="text-2xl font-bold text-slate-800"></h2>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                
+                <div id="modal-content">
+                    <!-- Problem details will be loaded here -->
+                </div>
+                
+                <div class="flex justify-between items-center mt-8">
+                    <div class="flex space-x-4">
+                        <button onclick="tryInCompiler()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                            Coba di Compiler
+                        </button>
+                        <button onclick="showHint()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                            Lihat Petunjuk
+                        </button>
+                    </div>
+                    <button onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">
+                © 2024 Python Learning Platform. Dibuat untuk memudahkan belajar pemrograman Python.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Problem data (same as in main.js)
+        const problems = [
+            {
+                id: 1,
+                title: "Odd, Even, or Zero",
+                difficulty: "beginner",
+                description: "Buat program untuk menentukan apakah sebuah bilangan: 'Odd' jika ganjil, 'Even' jika genap, 'Zero' jika 0",
+                inputFormat: "Satu bilangan integer.",
+                outputFormat: "Cetak salah satu: 'Odd', 'Even', atau 'Zero'.",
+                sampleInput: "0",
+                sampleOutput: "Zero",
+                explanation: "Bilangan 0 adalah nol, bukan ganjil atau genap.",
+                hint: "Gunakan operator modulo (%) untuk memeriksa apakah bilangan habis dibagi 2.",
+                template: `number = int(input())
+if number == 0:
+    print("Zero")
+elif number % 2 == 0:
+    print("Even")
+else:
+    print("Odd")`
+            },
+            {
+                id: 2,
+                title: "Grade Classification",
+                difficulty: "beginner",
+                description: "Input nilai ujian (0-100). Jika tidak valid, cetak 'Invalid'. Jika valid, tentukan grade A-E",
+                inputFormat: "Satu bilangan integer.",
+                outputFormat: "Satu huruf grade atau 'Invalid'.",
+                sampleInput: "120",
+                sampleOutput: "Invalid",
+                explanation: "Nilai 120 berada di luar rentang 0-100, maka outputnya 'Invalid'.",
+                hint: "Validasi input terlebih dahulu sebelum menentukan grade.",
+                template: `nilai = int(input())
+if nilai < 0 or nilai > 100:
+    print("Invalid")
+elif nilai >= 85:
+    print("A")
+elif nilai >= 70:
+    print("B")
+elif nilai >= 55:
+    print("C")
+elif nilai >= 40:
+    print("D")
+else:
+    print("E")`
+            },
+            {
+                id: 3,
+                title: "Print Numbers With Step",
+                difficulty: "beginner",
+                description: "Cetak angka dari 1 sampai N, tetapi lewati setiap bilangan kelipatan 4",
+                inputFormat: "Integer N.",
+                outputFormat: "Setiap angka yang tidak termasuk kelipatan 4 dicetak di baris baru.",
+                sampleInput: "10",
+                sampleOutput: "1\n2\n3\n5\n6\n7\n9\n10",
+                explanation: "Angka 4 dan 8 adalah kelipatan 4, jadi tidak dicetak.",
+                hint: "Gunakan loop dan operator modulo untuk melewati kelipatan 4.",
+                template: `N = int(input())
+for i in range(1, N + 1):
+    if i % 4 != 0:
+        print(i)`
+            },
+            {
+                id: 4,
+                title: "Repeat Word",
+                difficulty: "beginner",
+                description: "Cetak kata 'Python' sebanyak N kali dengan nomor urut di depan",
+                inputFormat: "Integer N.",
+                outputFormat: "N baris dengan format: <nomor>. Python",
+                sampleInput: "3",
+                sampleOutput: "1. Python\n2. Python\n3. Python",
+                explanation: "Kata 'Python' dicetak 3 kali dengan nomor urut 1, 2, dan 3.",
+                hint: "Gunakan loop dan f-string untuk format output yang benar.",
+                template: `N = int(input())
+for i in range(1, N + 1):
+    print(f"{i}. Python")`
+            },
+            {
+                id: 5,
+                title: "Multiples of 3 and 5",
+                difficulty: "beginner",
+                description: "Cetak semua angka dari 1 sampai N yang merupakan kelipatan 3 atau 5",
+                inputFormat: "Integer N.",
+                outputFormat: "Angka valid dicetak baris per baris.",
+                sampleInput: "15",
+                sampleOutput: "3\n5\n6\n9\n10\n12\n15",
+                explanation: "Semua angka yang habis dibagi 3 atau 5 dicetak.",
+                hint: "Gunakan operator modulo dan kondisi OR (or) untuk memeriksa kedua kondisi.",
+                template: `N = int(input())
+for i in range(1, N + 1):
+    if i % 3 == 0 or i % 5 == 0:
+        print(i)`
+            },
+            {
+                id: 6,
+                title: "Square & Diagonal",
+                difficulty: "intermediate",
+                description: "Untuk persegi bersisi S, hitung luas, keliling, dan panjang diagonal",
+                inputFormat: "Integer S.",
+                outputFormat: "Luas: X\nKeliling: Y\nDiagonal: Z",
+                sampleInput: "5",
+                sampleOutput: "Luas: 25\nKeliling: 20\nDiagonal: 7.07",
+                explanation: "Luas = S², Keliling = 4S, Diagonal = S√2",
+                hint: "Gunakan modul math untuk fungsi akar kuadrat (sqrt).",
+                template: `import math
+S = int(input())
+luas = S * S
+keliling = 4 * S
+diagonal = S * math.sqrt(2)
+print(f"Luas: {luas}")
+print(f"Keliling: {keliling}")
+print(f"Diagonal: {diagonal:.2f}")`
+            },
+            {
+                id: 7,
+                title: "Modulo Comparison",
+                difficulty: "intermediate",
+                description: "Diberikan dua angka A dan B, bandingkan A%B dan B%A, cetak mana yang lebih besar",
+                inputFormat: "Satu baris dua integer A dan B.",
+                outputFormat: "Cetak salah satu: 'A', 'B', atau 'Equal'.",
+                sampleInput: "10 6",
+                sampleOutput: "B",
+                explanation: "10%6 = 4, 6%10 = 6. Karena 6 > 4, outputnya 'B'.",
+                hint: "Hitung kedua modulo terlebih dahulu, kemudian bandingkan hasilnya.",
+                template: `A, B = map(int, input().split())
+mod1 = A % B
+mod2 = B % A
+if mod1 > mod2:
+    print("A")
+elif mod2 > mod1:
+    print("B")
+else:
+    print("Equal")`
+            },
+            {
+                id: 8,
+                title: "Power or Root",
+                difficulty: "intermediate",
+                description: "Diberikan bilangan X dan perintah C: 'pow' untuk X² atau 'root' untuk akar kuadrat X",
+                inputFormat: "Dua baris: Integer X, String C",
+                outputFormat: "Hasil sesuai perintah.",
+                sampleInput: "9\nroot",
+                sampleOutput: "3.00",
+                explanation: "Perintah 'root' menghitung akar kuadrat 9 = 3.00",
+                hint: "Gunakan percabangan if-elif untuk memilih operasi yang sesuai.",
+                template: `import math
+X = int(input())
+C = input()
+if C == "pow":
+    print(X ** 2)
+elif C == "root":
+    print(f"{math.sqrt(X):.2f}")
+else:
+    print("Perintah tidak valid")`
+            },
+            {
+                id: 9,
+                title: "Fizz for Five",
+                difficulty: "intermediate",
+                description: "Cetak angka 1-N, jika kelipatan 5 cetak 'Fizz', selainnya cetak angka",
+                inputFormat: "Integer N.",
+                outputFormat: "Setiap baris berisi angka atau teks 'Fizz'.",
+                sampleInput: "10",
+                sampleOutput: "1\n2\n3\n4\nFizz\n6\n7\n8\n9\nFizz",
+                explanation: "Angka 5 dan 10 adalah kelipatan 5, jadi diganti dengan 'Fizz'.",
+                hint: "Ini adalah varian dari FizzBuzz classik, fokus pada kelipatan 5 saja.",
+                template: `N = int(input())
+for i in range(1, N + 1):
+    if i % 5 == 0:
+        print("Fizz")
+    else:
+        print(i)`
+            },
+            {
+                id: 10,
+                title: "Maximum of Three",
+                difficulty: "intermediate",
+                description: "Diberikan 3 angka, tentukan angka terbesar tanpa menggunakan fungsi max()",
+                inputFormat: "Tiga integer dipisahkan spasi.",
+                outputFormat: "Satu angka terbesar.",
+                sampleInput: "12 7 30",
+                sampleOutput: "30",
+                explanation: "Dari angka 12, 7, dan 30, angka terbesar adalah 30.",
+                hint: "Gunakan variabel sementara untuk menyimpan nilai maksimum sementara.",
+                template: `a, b, c = map(int, input().split())
+maks = a
+if b > maks:
+    maks = b
+if c > maks:
+    maks = c
+print(maks)`
+            },
+            {
+                id: 11,
+                title: "Sum of Even Numbers",
+                difficulty: "intermediate",
+                description: "Hitung total semua angka genap dari 1 sampai N",
+                inputFormat: "Integer N.",
+                outputFormat: "Satu angka: total bilangan genap.",
+                sampleInput: "10",
+                sampleOutput: "30",
+                explanation: "Angka genap dari 1-10: 2+4+6+8+10 = 30",
+                hint: "Gunakan variabel untuk mengakumulasi total dan operator modulo untuk memeriksa genap.",
+                template: `N = int(input())
+total = 0
+for i in range(1, N + 1):
+    if i % 2 == 0:
+        total += i
+print(total)`
+            },
+            {
+                id: 12,
+                title: "Star Pattern",
+                difficulty: "advanced",
+                description: "Cetak pola segitiga menggunakan karakter * dengan tinggi N",
+                inputFormat: "Integer N.",
+                outputFormat: "Pola berbentuk segitiga dengan karakter *.",
+                sampleInput: "4",
+                sampleOutput: "*\n**\n***\n****",
+                explanation: "Setiap baris mencetak bintang sebanyak nomor barisnya.",
+                hint: "Gunakan loop dan string multiplication untuk mencetak bintang berulang.",
+                template: `N = int(input())
+for i in range(1, N + 1):
+    print("*" * i)`
+            },
+            {
+                id: 13,
+                title: "Count Multiples",
+                difficulty: "advanced",
+                description: "Hitung berapa banyak angka dari 1 sampai N yang merupakan kelipatan 2 dan 7",
+                inputFormat: "Integer N.",
+                outputFormat: "Jumlah angka yang merupakan kelipatan 14.",
+                sampleInput: "50",
+                sampleOutput: "3",
+                explanation: "Kelipatan 14 dari 1-50: 14, 28, 42 (total 3 angka)",
+                hint: "Kelipatan 2 dan 7 sama dengan kelipatan KPK(2,7) = 14.",
+                template: `N = int(input())
+count = 0
+for i in range(1, N + 1):
+    if i % 14 == 0:
+        count += 1
+print(count)`
+            },
+            {
+                id: 14,
+                title: "Valid Usernames",
+                difficulty: "advanced",
+                description: "Filter username yang valid menggunakan regex: diawali huruf, boleh huruf & angka, minimal 3 karakter",
+                inputFormat: "Baris pertama: integer N, diikuti N username",
+                outputFormat: "Username valid satu per baris, atau 'No valid username'",
+                sampleInput: "5\njoy123\nandi_\nmaria99\n_user\ntest007",
+                sampleOutput: "joy123\nmaria99\ntest007",
+                explanation: "Username valid: joy123, maria99, test007 (diawali huruf, minimal 3 karakter, hanya huruf & angka)",
+                hint: "Gunakan regex dengan pola: ^[a-zA-Z][a-zA-Z0-9]{2,}$",
+                template: `import re
+N = int(input())
+valid_usernames = []
+pattern = r'^[a-zA-Z][a-zA-Z0-9]{2,}$'
+for _ in range(N):
+    username = input()
+    if re.match(pattern, username):
+        valid_usernames.append(username)
+if valid_usernames:
+    for username in valid_usernames:
+        print(username)
+else:
+    print("No valid username")`
+            },
+            {
+                id: 15,
+                title: "Extract Numbers",
+                difficulty: "advanced",
+                description: "Ekstrak angka dari string, hitung total, rata-rata, dan nilai terbesar",
+                inputFormat: "Baris pertama: integer N, diikuti N baris string",
+                outputFormat: "Total: X\nAverage: Y\nMax: Z",
+                sampleInput: "6\nRp25000\nharga:30000\n50k\nabc\n120000\nid:5000",
+                sampleOutput: "Total: 230000\nAverage: 57500\nMax: 120000",
+                explanation: "Angka yang diekstrak: 25000, 30000, 50, 120000, 5000. Total=230000, Rata-rata=57500, Maks=120000",
+                hint: "Gunakan regex untuk menemukan semua angka dalam string.",
+                template: `import re
+N = int(input())
+numbers = []
+for _ in range(N):
+    line = input()
+    found_numbers = re.findall(r'\\d+', line)
+    numbers.extend(map(int, found_numbers))
+if numbers:
+    total = sum(numbers)
+    average = total // len(numbers)
+    max_num = max(numbers)
+    print(f"Total: {total}")
+    print(f"Average: {average}")
+    print(f"Max: {max_num}")`
+            }
+        ];
+
+        let currentFilter = 'all';
+        let selectedProblem = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProblems();
+            updateProgress();
+            
+            // Add animations
+            anime({
+                targets: '.filter-btn',
+                scale: [0.8, 1],
+                opacity: [0, 1],
+                delay: anime.stagger(100),
+                duration: 600,
+                easing: 'easeOutQuad'
+            });
+        });
+
+        // Load problems into grid
+        function loadProblems() {
+            const container = document.getElementById('problems-grid');
+            container.innerHTML = '';
+            
+            const filteredProblems = currentFilter === 'all' ? problems : problems.filter(p => p.difficulty === currentFilter);
+            
+            filteredProblems.forEach((problem, index) => {
+                const isCompleted = isProblemCompleted(problem.id);
+                const difficultyColor = {
+                    'beginner': 'beginner',
+                    'intermediate': 'intermediate',
+                    'advanced': 'advanced'
+                };
+                
+                const problemCard = document.createElement('div');
+                problemCard.className = `problem-card p-6 rounded-lg ${isCompleted ? 'border-emerald-500 bg-emerald-50' : ''}`;
+                problemCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-semibold text-slate-800">${problem.title}</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="difficulty-badge ${difficultyColor[problem.difficulty]}">${problem.difficulty}</span>
+                            ${isCompleted ? '<span class="text-emerald-500 text-xl">✅</span>' : ''}
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4 line-clamp-3">${problem.description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500">Soal #${problem.id}</span>
+                        <button onclick="showProblemDetail(${problem.id})" class="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                            Lihat Detail
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(problemCard);
+            });
+            
+            // Animate cards
+            anime({
+                targets: '.problem-card',
+                translateY: [50, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(100),
+                duration: 800,
+                easing: 'easeOutQuad'
+            });
+        }
+
+        // Filter problems
+        function filterProblems(difficulty) {
+            currentFilter = difficulty;
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            loadProblems();
+        }
+
+        // Show problem detail modal
+        function showProblemDetail(problemId) {
+            const problem = problems.find(p => p.id === problemId);
+            if (!problem) return;
+            
+            selectedProblem = problem;
+            
+            document.getElementById('modal-title').textContent = `${problem.title} (#${problem.id})`;
+            document.getElementById('modal-content').innerHTML = `
+                <div class="mb-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="difficulty-badge ${problem.difficulty}">${problem.difficulty}</span>
+                        ${isProblemCompleted(problem.id) ? '<span class="text-emerald-500 font-semibold">✅ Selesai</span>' : ''}
+                    </div>
+                    <p class="text-gray-700 mb-4">${problem.description}</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h4 class="font-semibold text-slate-800 mb-2">Input Format:</h4>
+                        <p class="text-gray-600 text-sm">${problem.inputFormat}</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-800 mb-2">Output Format:</h4>
+                        <p class="text-gray-600 text-sm">${problem.outputFormat}</p>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="font-semibold text-slate-800 mb-2">Contoh:</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="code-example">
+                            <h5 class="text-white font-semibold mb-2">Input:</h5>
+                            <pre class="text-green-400 text-sm">${problem.sampleInput}</pre>
+                        </div>
+                        <div class="code-example">
+                            <h5 class="text-white font-semibold mb-2">Output:</h5>
+                            <pre class="text-green-400 text-sm">${problem.sampleOutput}</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                ${problem.explanation ? `
+                <div class="mb-6">
+                    <h4 class="font-semibold text-slate-800 mb-2">Penjelasan:</h4>
+                    <p class="text-gray-600">${problem.explanation}</p>
+                </div>
+                ` : ''}
+                
+                <div id="hint-section" style="display: none;">
+                    <h4 class="font-semibold text-slate-800 mb-2">💡 Petunjuk:</h4>
+                    <p class="text-blue-600 bg-blue-50 p-4 rounded-lg">${problem.hint}</p>
+                </div>
+            `;
+            
+            document.getElementById('problem-modal').classList.add('show');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('problem-modal').classList.remove('show');
+            selectedProblem = null;
+        }
+
+        // Try problem in compiler
+        function tryInCompiler() {
+            if (selectedProblem) {
+                localStorage.setItem('selectedProblem', JSON.stringify(selectedProblem));
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Show hint
+        function showHint() {
+            const hintSection = document.getElementById('hint-section');
+            hintSection.style.display = hintSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Check if problem is completed
+        function isProblemCompleted(problemId) {
+            const progress = JSON.parse(localStorage.getItem('pythonLearningProgress') || '{}');
+            return progress.completed && progress.completed.includes(problemId);
+        }
+
+        // Update progress display
+        function updateProgress() {
+            const progress = JSON.parse(localStorage.getItem('pythonLearningProgress') || '{}');
+            const completedCount = progress.completed ? progress.completed.length : 0;
+            const totalProblems = problems.length;
+            const percentage = Math.round((completedCount / totalProblems) * 100);
+            
+            document.getElementById('progress-percentage').textContent = `${percentage}%`;
+            document.getElementById('streak-count').textContent = progress.streak || 0;
+            document.getElementById('badges-count').textContent = Object.keys(progress).filter(key => 
+                key !== 'completed' && key !== 'streak' && progress[key]
+            ).length;
+        }
+
+        // Scroll to problems section
+        function scrollToProblems() {
+            document.getElementById('problems-grid').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('problem-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Tutorial - Panduan Belajar Python</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .code-font { font-family: 'JetBrains Mono', monospace; }
+        .hero-bg { background-image: url('resources/hero-coding.jpg'); }
+        .pattern-bg { background-image: url('resources/bg-pattern.svg'); }
+        
+        .tutorial-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .tutorial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(6, 182, 212, 0.15);
+            border-color: #06b6d4;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #06b6d4;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #06b6d4;
+            border-radius: 1px;
+        }
+        
+        .code-example {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .code-example::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            background: #334155;
+            color: #94a3b8;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        
+        .run-button {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .run-button:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+        
+        .output-result {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            color: #10b981;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            display: none;
+        }
+        
+        .concept-tab {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .concept-tab.active {
+            background: #06b6d4;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .search-box {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 pattern-bg min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <img src="resources/python-logo.png" alt="Python Logo" class="w-8 h-8">
+                    <span class="text-xl font-bold text-slate-800">Python Learning</span>
+                </div>
+                <div class="flex space-x-8">
+                    <a href="index.html" class="nav-link text-slate-700 font-medium">Compiler</a>
+                    <a href="problems.html" class="nav-link text-slate-700 font-medium">Latihan</a>
+                    <a href="tutorial.html" class="nav-link active text-slate-700 font-medium">Tutorial</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg bg-cover bg-center py-16 relative">
+        <div class="absolute inset-0 bg-slate-900/60"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                Tutorial Python
+            </h1>
+            <p class="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+                Pelajari konsep Python dari dasar hingga lanjutan dengan tutorial interaktif 
+                dan contoh kode yang bisa Anda coba langsung.
+            </p>
+            <div class="flex justify-center">
+                <input 
+                    type="text" 
+                    id="search-tutorial" 
+                    placeholder="Cari tutorial..." 
+                    class="search-box px-6 py-3 rounded-lg w-full max-w-md text-slate-800 focus:outline-none"
+                    onkeyup="searchTutorial()"
+                >
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Tutorial Categories -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">Pilih Topik Tutorial</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12" id="tutorial-categories">
+                <!-- Categories will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Tutorial Content -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-12">
+            <div id="tutorial-content">
+                <h3 class="text-2xl font-bold text-slate-800 mb-6">Pilih kategori tutorial di atas untuk memulai</h3>
+                <div class="text-center py-12">
+                    <div class="text-6xl mb-4">📚</div>
+                    <p class="text-gray-600 text-lg">Mulai belajar Python dengan tutorial interaktif kami</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Reference -->
+        <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-lg p-8 text-white">
+            <h3 class="text-2xl font-bold mb-6 text-center">Quick Reference</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="font-semibold mb-4 text-cyan-400">🔧 Operator Dasar</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>Penjumlahan:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">a + b</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Pengurangan:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">a - b</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Perkalian:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">a * b</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Pembagian:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">a / b</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Modulo:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">a % b</code>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-orange-400">🔄 Control Flow</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>If statement:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">if condition:</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>For loop:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">for i in range(n)</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>While loop:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">while condition:</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Break:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">break</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Continue:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">continue</code>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-emerald-400">📋 Data Structures</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>List:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">[1, 2, 3]</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Dictionary:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">{'key': 'value'}</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Tuple:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">(1, 2, 3)</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Set:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">{1, 2, 3}</code>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>String:</span>
+                            <code class="bg-slate-700 px-2 py-1 rounded">"Hello"</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">
+                © 2024 Python Learning Platform. Dibuat untuk memudahkan belajar pemrograman Python.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Pyodide for Python execution -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    
+    <script>
+        let pyodide = null;
+        let currentCategory = null;
+
+        // Tutorial categories and content
+        const tutorialCategories = {
+            basics: {
+                title: "Python Basics",
+                icon: "🐍",
+                description: "Konsep dasar Python untuk pemula",
+                topics: [
+                    {
+                        title: "Variables & Data Types",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">Variables dan Data Types</h4>
+                            <p class="mb-4">Dalam Python, variable digunakan untuk menyimpan data. Python memiliki beberapa tipe data dasar:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># Integer (bilangan bulat)
+umur = 25
+
+# Float (bilangan desimal)
+tinggi = 175.5
+
+# String (teks)
+nama = "Andi"
+
+# Boolean (True/False)
+menikah = False
+
+# List (daftar)
+hobi = ["membaca", "coding", "olahraga"]
+
+# Dictionary (kamus)
+profil = {"nama": "Andi", "umur": 25}
+
+print(f"Nama: {nama}")
+print(f"Umur: {umur}")
+print(f"Tinggi: {tinggi} cm")
+print(f"Menikah: {menikah}")
+print(f"Hobi: {hobi}")
+print(f"Profil: {profil}")</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Tips:</h5>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Nama variable harus dimulai dengan huruf atau underscore (_)</li>
+                                <li>Python bersifat case-sensitive (nama ≠ Nama)</li>
+                                <li>Gunakan nama yang deskriptif untuk kejelasan</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Input & Output",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">Input dan Output</h4>
+                            <p class="mb-4">Python menyediakan fungsi untuk berinteraksi dengan user:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># Input dari user
+nama = input("Masukkan nama Anda: ")
+umur = int(input("Masukkan umur Anda: "))
+tinggi = float(input("Masukkan tinggi Anda: "))
+
+# Output dengan print
+print("=== BIODATA ===")
+print(f"Nama: {nama}")
+print(f"Umur: {umur} tahun")
+print(f"Tinggi: {tinggi} cm")
+
+# Format output lainnya
+print("Halo,", nama + "!")
+print("Umur Anda 5 tahun lagi:", umur + 5)
+
+# Escape characters
+print("Baris pertama\\nBaris kedua")
+print("Tab\\tkarakter")
+print("Kutipan: \\"Halo\\"")</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Best Practices:</h5>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Gunakan f-string untuk format yang kompleks</li>
+                                <li>Konversi tipe data saat menggunakan input()</li>
+                                <li>Berikan pesan yang jelas saat meminta input</li>
+                            </ul>
+                        `
+                    }
+                ]
+            },
+            control: {
+                title: "Control Structures",
+                icon: "🔄",
+                description: "Struktur kontrol dan logika pemrograman",
+                topics: [
+                    {
+                        title: "If-Else Statements",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">If-Else Statements</h4>
+                            <p class="mb-4">Struktur kontrol untuk pengambilan keputusan:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># Contoh if-elif-else
+nilai = 85
+
+if nilai >= 90:
+    grade = "A"
+    keterangan = "Sangat Baik"
+elif nilai >= 80:
+    grade = "B"
+    keterangan = "Baik"
+elif nilai >= 70:
+    grade = "C"
+    keterangan = "Cukup"
+elif nilai >= 60:
+    grade = "D"
+    keterangan = "Kurang"
+else:
+    grade = "E"
+    keterangan = "Sangat Kurang"
+
+print(f"Nilai: {nilai}")
+print(f"Grade: {grade}")
+print(f"Keterangan: {keterangan}")
+
+# Nested if
+usia = 20
+menikah = False
+
+if usia >= 18:
+    if menikah:
+        status = "Dewasa Menikah"
+    else:
+        status = "Dewasa Lajang"
+else:
+    status = "Belum Dewasa"
+
+print(f"Status: {status}")</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Operator Perbandingan:</h5>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">==</code> Sama dengan</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">!=</code> Tidak sama dengan</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">></code> Lebih besar</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded"><</code> Lebih kecil</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">>=</code> Lebih besar sama dengan</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded"><=</code> Lebih kecil sama dengan</div>
+                            </div>
+                        `
+                    },
+                    {
+                        title: "For Loops",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">For Loops</h4>
+                            <p class="mb-4">Mengulang blok kode untuk setiap item dalam sequence:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># Loop dengan range
+print("Countdown dari 5:")
+for i in range(5, 0, -1):
+    print(i)
+print("Go!")
+
+# Loop dengan list
+buah = ["apel", "jeruk", "mangga", "pisang"]
+print("\\nDaftar buah:")
+for index, item in enumerate(buah, 1):
+    print(f"{index}. {item}")
+
+# Loop dengan string
+kata = "Python"
+print("\\nHuruf demi huruf:")
+for huruf in kata:
+    print(huruf)
+
+# Nested loops
+print("\\nPola bintang:")
+for i in range(1, 6):
+    print("*" * i)
+
+# Loop dengan break dan continue
+print("\\nAngka 1-10, lewati 3 dan 7, berhenti di 9:")
+for i in range(1, 11):
+    if i == 3 or i == 7:
+        continue
+    elif i == 9:
+        break
+    print(i)</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Fungsi range():</h5>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li><code>range(n)</code>: 0 sampai n-1</li>
+                                <li><code>range(start, stop)</code>: start sampai stop-1</li>
+                                <li><code>range(start, stop, step)</code>: dengan step tertentu</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "While Loops",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">While Loops</h4>
+                            <p class="mb-4">Mengulang blok kode selama kondisi True:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># While loop dasar
+print("Countdown dengan while:")
+count = 5
+while count > 0:
+    print(count)
+    count -= 1
+print("Blast off!")
+
+# While dengan input user
+print("\\nGame tebak angka:")
+import random
+angka_rahasia = random.randint(1, 10)
+percobaan = 0
+max_percobaan = 3
+
+while percobaan < max_percobaan:
+    tebakan = int(input("Tebak angka (1-10): "))
+    percobaan += 1
+    
+    if tebakan == angka_rahasia:
+        print(f"Selamat! Anda berhasil menebak dalam {percobaan} percobaan!")
+        break
+    elif tebakan < angka_rahasia:
+        print("Terlalu kecil!")
+    else:
+        print("Terlalu besar!")
+    
+    if percobaan < max_percobaan:
+        print(f"Sisa percobaan: {max_percobaan - percobaan}")
+else:
+    print(f"Game over! Angka yang benar adalah {angka_rahasia}")
+
+# While dengan else
+print("\\nLoop dengan else:")
+i = 1
+while i <= 5:
+    print(i)
+    i += 1
+else:
+    print("Loop selesai!")</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Perbedaan For vs While:</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h6 class="font-semibold text-blue-800 mb-2">For Loop</h6>
+                                    <ul class="text-sm text-blue-700 space-y-1">
+                                        <li>• Jumlah iterasi diketahui</li>
+                                        <li>• Menggunakan sequence/range</li>
+                                        <li>• Cocok untuk iterasi koleksi</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <h6 class="font-semibold text-green-800 mb-2">While Loop</h6>
+                                    <ul class="text-sm text-green-700 space-y-1">
+                                        <li>• Jumlah iterasi tidak diketahui</li>
+                                        <li>• Berdasarkan kondisi boolean</li>
+                                        <li>• Cocok untuk validasi input</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            functions: {
+                title: "Functions & Modules",
+                icon: "⚡",
+                description: "Fungsi dan modularisasi kode",
+                topics: [
+                    {
+                        title: "Function Basics",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">Function Basics</h4>
+                            <p class="mb-4">Fungsi digunakan untuk mengorganisir kode yang dapat digunakan kembali:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># Function tanpa parameter
+def sapa():
+    print("Halo! Selamat datang di Python!")
+
+# Function dengan parameter
+def sapa_nama(nama):
+    print(f"Halo {nama}! Apa kabar?")
+
+# Function dengan return value
+def tambah(a, b):
+    hasil = a + b
+    return hasil
+
+# Function dengan default parameter
+def perkenalan(nama, kota="Jakarta", pekerjaan="Programmer"):
+    print(f"Nama saya {nama}")
+    print(f"Saya tinggal di {kota}")
+    print(f"Pekerjaan saya adalah {pekerjaan}")
+
+# Function dengan multiple return
+def operasi_matematika(a, b):
+    tambah = a + b
+    kurang = a - b
+    kali = a * b
+    bagi = a / b if b != 0 else "Error: Division by zero"
+    return tambah, kurang, kali, bagi
+
+# Memanggil functions
+print("=== Memanggil Functions ===")
+sapa()
+sapa_nama("Budi")
+
+hasil_tambah = tambah(15, 7)
+print(f"15 + 7 = {hasil_tambah}")
+
+print("\\n=== Perkenalan ===")
+perkenalan("Andi")
+perkenalan("Siti", "Bandung")
+perkenalan("Dedi", "Surabaya", "Designer")
+
+print("\\n=== Operasi Matematika ===")
+t, k, ka, b = operasi_matematika(20, 5)
+print(f"Tambah: {t}")
+print(f"Kurang: {k}")
+print(f"Kali: {ka}")
+print(f"Bagi: {b}")</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Keuntungan Menggunakan Functions:</h5>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li><strong>Reusability:</strong> Kode dapat digunakan berkali-kali</li>
+                                <li><strong>Organization:</strong> Kode lebih terstruktur dan mudah dibaca</li>
+                                <li><strong>Debugging:</strong> Lebih mudah mencari dan memperbaiki error</li>
+                                <li><strong>Maintenance:</strong> Perubahan hanya perlu dilakukan di satu tempat</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Function Arguments",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">Function Arguments</h4>
+                            <p class="mb-4">Berbagai cara untuk mengirim parameter ke function:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># Positional Arguments
+def biodata(nama, umur, kota):
+    print(f"{nama}, {umur} tahun, tinggal di {kota}")
+
+# Keyword Arguments
+def data_diri(nama, pekerjaan, gaji, kota="Jakarta"):
+    print(f"{nama} bekerja sebagai {pekerjaan}")
+    print(f"Gaji: Rp{gaji:,}")
+    print(f"Kota: {kota}")
+
+# Variable-length arguments (*args)
+def total(*angka):
+    return sum(angka)
+
+# Variable-length keyword arguments (**kwargs)
+def print_info(**info):
+    for key, value in info.items():
+        print(f"{key}: {value}")
+
+# Combination of all argument types
+def cetak_biodata(nama, *hobi, **info_tambahan):
+    print(f"Nama: {nama}")
+    print("Hobi:", ", ".join(hobi))
+    print("Info Tambahan:")
+    for key, value in info_tambahan.items():
+        print(f"  {key}: {value}")
+
+# Contoh penggunaan
+print("=== Positional Arguments ===")
+biodata("Andi", 25, "Jakarta")
+
+print("\\n=== Keyword Arguments ===")
+data_diri(gaji=8000000, nama="Budi", pekerjaan="Programmer")
+data_diri("Siti", "Designer", 6000000, "Bandung")
+
+print("\\n=== Variable Arguments ===")
+print("Total 1,2,3,4,5:", total(1, 2, 3, 4, 5))
+print("Total 10,20,30:", total(10, 20, 30))
+
+print("\\n=== Keyword Arguments ===")
+print_info(nama="Andi", umur=25, pekerjaan="Programmer", kota="Jakarta")
+
+print("\\n=== Combination ===")
+cetak_biodata("Andi", "Membaca", "Coding", "Olahraga", 
+              pekerjaan="Programmer", umur=25, kota="Jakarta")</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Jenis Arguments:</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h6 class="font-semibold text-blue-800 mb-2">Positional Arguments</h6>
+                                    <p class="text-sm text-blue-700">Argumen berdasarkan posisi/urutan</p>
+                                    <code class="text-xs bg-blue-100 px-2 py-1 rounded mt-2 block">func(a, b, c)</code>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <h6 class="font-semibold text-green-800 mb-2">Keyword Arguments</h6>
+                                    <p class="text-sm text-green-700">Argumen dengan nama parameter</p>
+                                    <code class="text-xs bg-green-100 px-2 py-1 rounded mt-2 block">func(a=1, b=2)</code>
+                                </div>
+                                <div class="bg-yellow-50 p-4 rounded-lg">
+                                    <h6 class="font-semibold text-yellow-800 mb-2">*args</h6>
+                                    <p class="text-sm text-yellow-700">Menerima banyak argumen posisi</p>
+                                    <code class="text-xs bg-yellow-100 px-2 py-1 rounded mt-2 block">def func(*args)</code>
+                                </div>
+                                <div class="bg-purple-50 p-4 rounded-lg">
+                                    <h6 class="font-semibold text-purple-800 mb-2">**kwargs</h6>
+                                    <p class="text-sm text-purple-700">Menerima banyak argumen keyword</p>
+                                    <code class="text-xs bg-purple-100 px-2 py-1 rounded mt-2 block">def func(**kwargs)</code>
+                                </div>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            datastructures: {
+                title: "Data Structures",
+                icon: "📊",
+                description: "Struktur data dan manipulasi",
+                topics: [
+                    {
+                        title: "Lists & Tuples",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">Lists & Tuples</h4>
+                            <p class="mb-4">List dan Tuple adalah struktur data untuk menyimpan multiple values:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># List (mutable - dapat diubah)
+buah_list = ["apel", "jeruk", "mangga", "pisang"]
+print("List awal:", buah_list)
+
+# Menambah elemen
+buah_list.append("durian")
+buah_list.insert(1, "anggur")
+print("Setelah ditambah:", buah_list)
+
+# Menghapus elemen
+buah_list.remove("jeruk")
+del buah_list[0]
+print("Setelah dihapus:", buah_list)
+
+# Mengubah elemen
+buah_list[0] = "kiwi"
+print("Setelah diubah:", buah_list)
+
+# List operations
+angka = [3, 1, 4, 1, 5, 9, 2, 6]
+print("Angka asli:", angka)
+angka.sort()
+print("Setelah diurutkan:", angka)
+angka.reverse()
+print("Setelah dibalik:", angka)
+
+# List comprehension
+kuadrat = [x**2 for x in range(1, 6)]
+print("Kuadrat 1-5:", kuadrat)
+
+# Tuple (immutable - tidak dapat diubah)
+koordinat = (3, 4)
+warna_rgb = (255, 128, 0)
+print(f"\\nKoordinat: {koordinat}")
+print(f"Warna RGB: {warna_rgb}")
+
+# Unpacking tuple
+x, y = koordinat
+print(f"x = {x}, y = {y}")
+
+# Tuple dalam list
+titik = [(0,0), (1,1), (2,4), (3,9)]
+for x, y in titik:
+    print(f"Titik ({x}, {y})")</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Perbedaan List vs Tuple:</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h6 class="font-semibold text-blue-800 mb-2">List</h6>
+                                    <ul class="text-sm text-blue-700 space-y-1">
+                                        <li>• Dapat diubah (mutable)</li>
+                                        <li>• Menggunakan []</li>
+                                        <li>• Lebih fleksibel</li>
+                                        <li>• Cocok untuk data yang berubah</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <h6 class="font-semibold text-green-800 mb-2">Tuple</h6>
+                                    <ul class="text-sm text-green-700 space-y-1">
+                                        <li>• Tidak dapat diubah (immutable)</li>
+                                        <li>• Menggunakan ()</li>
+                                        <li>• Lebih cepat</li>
+                                        <li>• Cocok untuk data tetap</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        title: "Dictionaries",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">Dictionaries</h4>
+                            <p class="mb-4">Dictionary menyimpan data dalam pasangan key-value:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># Membuat dictionary
+mahasiswa = {
+    "nama": "Andi",
+    "nim": "123456",
+    "jurusan": "Informatika",
+    "semester": 4,
+    "ipk": 3.75,
+    "aktif": True
+}
+
+print("Data Mahasiswa:")
+for key, value in mahasiswa.items():
+    print(f"{key}: {value}")
+
+# Akses nilai
+print(f"\\nNama: {mahasiswa['nama']}")
+print(f"IPK: {mahasiswa.get('ipk')}")
+
+# Mengubah nilai
+mahasiswa["ipk"] = 3.85
+mahasiswa["semester"] = 5
+
+# Menambah item baru
+mahasiswa["email"] = "andi@email.com"
+mahasiswa["hobi"] = ["coding", "membaca", "olahraga"]
+
+# Menghapus item
+del mahasiswa["aktif"]
+email = mahasiswa.pop("email", "tidak ada email")
+
+print(f"\\nSetelah diupdate:")
+for key, value in mahasiswa.items():
+    print(f"{key}: {value}")
+
+print(f"\\nEmail yang dihapus: {email}")
+
+# Dictionary methods
+print(f"\\nKeys: {list(mahasiswa.keys())}")
+print(f"Values: {list(mahasiswa.values())}")
+print(f"Items: {list(mahasiswa.items())}")
+
+# Nested dictionary
+kampus = {
+    "nama": "Universitas ABC",
+    "fakultas": {
+        "teknik": {
+            "informatika": {"mahasiswa": 200, "dosen": 15},
+            "mesin": {"mahasiswa": 150, "dosen": 12}
+        },
+        "ekonomi": {
+            "manajemen": {"mahasiswa": 300, "dosen": 20},
+            "akuntansi": {"mahasiswa": 250, "dosen": 18}
+        }
+    }
+}
+
+print(f"\\nTotal mahasiswa Teknik Informatika: {kampus['fakultas']['teknik']['informatika']['mahasiswa']}")
+
+# Dictionary comprehension
+kuadrat = {x: x**2 for x in range(1, 6)}
+print(f"\\nKuadrat: {kuadrat}")
+
+# Filter dictionary
+mahasiswa_lulus = {k: v for k, v in mahasiswa.items() if k != "nim"}
+print(f"Data tanpa NIM: {mahasiswa_lulus}")</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Method Dictionary Penting:</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">dict.get(key)</code> - Aman dari KeyError</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">dict.keys()</code> - Daftar semua keys</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">dict.values()</code> - Daftar semua values</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">dict.items()</code> - Pasangan key-value</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">dict.pop(key)</code> - Hapus dan return value</div>
+                                <div><code class="bg-gray-100 px-2 py-1 rounded">dict.update()</code> - Update dengan dictionary lain</div>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            errors: {
+                title: "Error Handling",
+                icon: "🛠️",
+                description: "Penanganan error dan debugging",
+                topics: [
+                    {
+                        title: "Try-Except Blocks",
+                        content: `
+                            <h4 class="text-lg font-semibold mb-4">Try-Except Blocks</h4>
+                            <p class="mb-4">Menangani error untuk mencegah program crash:</p>
+                            
+                            <div class="code-example" data-lang="python">
+                                <pre class="text-green-400 text-sm"><code># Basic try-except
+try:
+    angka = int(input("Masukkan angka: "))
+    hasil = 100 / angka
+    print(f"100 / {angka} = {hasil}")
+except ValueError:
+    print("Error: Input harus berupa angka!")
+except ZeroDivisionError:
+    print("Error: Tidak bisa dibagi oleh nol!")
+except Exception as e:
+    print(f"Error tidak terduga: {e}")
+
+# Try-except-else-finally
+try:
+    file = open("data.txt", "r")
+    data = file.read()
+    print("File berhasil dibaca")
+except FileNotFoundError:
+    print("File tidak ditemukan!")
+    data = None
+else:
+    print(f"Isi file: {len(data)} karakter")
+finally:
+    print("Operasi file selesai")
+    if 'file' in locals() and not file.closed:
+        file.close()
+
+# Multiple exceptions in one except
+try:
+    x = int(input("Masukkan angka: "))
+    y = int(input("Masukkan pembagi: "))
+    result = x / y
+    numbers = [1, 2, 3]
+    index = int(input("Masukkan index (0-2): "))
+    value = numbers[index]
+except (ValueError, ZeroDivisionError, IndexError) as e:
+    print(f"Error: {e}")
+    print("Pastikan input valid dan index dalam range!")
+
+# Raising exceptions
+def validate_age(age):
+    if not isinstance(age, int):
+        raise TypeError("Umur harus berupa integer!")
+    if age < 0:
+        raise ValueError("Umur tidak bisa negatif!")
+    if age > 150:
+        raise ValueError("Umur tidak realistis!")
+    return True
+
+try:
+    umur = int(input("Masukkan umur: "))
+    validate_age(umur)
+    print(f"Umur {umur} valid!")
+except (TypeError, ValueError) as e:
+    print(f"Validasi gagal: {e}")
+
+# Custom exceptions
+class CustomError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+def check_password(password):
+    if len(password) < 8:
+        raise CustomError("Password terlalu pendek! Minimal 8 karakter.")
+    if not any(char.isdigit() for char in password):
+        raise CustomError("Password harus mengandung angka!")
+    return True
+
+try:
+    pwd = input("Masukkan password: ")
+    check_password(pwd)
+    print("Password valid!")
+except CustomError as e:
+    print(f"Password error: {e}")</code></pre>
+                                <button class="run-button" onclick="runCode(this)">▶ Run</button>
+                            </div>
+                            <div class="output-result"></div>
+                            
+                            <h5 class="font-semibold mt-6 mb-3">Best Practices Error Handling:</h5>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Tangkap exception yang spesifik, bukan Exception umum</li>
+                                <li>Gunakan finally untuk cleanup (close file, connection, dll)</li>
+                                <li>Logging error untuk debugging di production</li>
+                                <li>Jangan menangkap error yang tidak bisa dihandle dengan baik</li>
+                                <li>Validation error sebelum processing</li>
+                            </ul>
+                        `
+                    }
+                ]
+            }
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTutorialCategories();
+            initializePyodide();
+            
+            // Add animations
+            anime({
+                targets: '.search-box',
+                scale: [0.9, 1],
+                opacity: [0, 1],
+                duration: 800,
+                easing: 'easeOutQuad'
+            });
+        });
+
+        // Load tutorial categories
+        function loadTutorialCategories() {
+            const container = document.getElementById('tutorial-categories');
+            container.innerHTML = '';
+            
+            Object.entries(tutorialCategories).forEach(([key, category]) => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'tutorial-card p-6 rounded-lg text-center';
+                categoryCard.innerHTML = `
+                    <div class="text-4xl mb-4">${category.icon}</div>
+                    <h3 class="text-lg font-semibold text-slate-800 mb-2">${category.title}</h3>
+                    <p class="text-gray-600 text-sm mb-4">${category.description}</p>
+                    <span class="text-cyan-600 font-semibold text-sm">${category.topics.length} topik</span>
+                `;
+                
+                categoryCard.addEventListener('click', () => showTutorialContent(key));
+                container.appendChild(categoryCard);
+            });
+            
+            // Animate cards
+            anime({
+                targets: '.tutorial-card',
+                translateY: [30, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(100),
+                duration: 600,
+                easing: 'easeOutQuad'
+            });
+        }
+
+        // Show tutorial content
+        function showTutorialContent(categoryKey) {
+            const category = tutorialCategories[categoryKey];
+            if (!category) return;
+            
+            currentCategory = categoryKey;
+            
+            const contentContainer = document.getElementById('tutorial-content');
+            contentContainer.innerHTML = `
+                <div class="mb-8">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="text-4xl">${category.icon}</div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800">${category.title}</h2>
+                            <p class="text-gray-600">${category.description}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        ${category.topics.map((topic, index) => `
+                            <button onclick="showTopic('${categoryKey}', ${index})" 
+                                    class="concept-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium">
+                                ${topic.title}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div id="topic-content">
+                    <p class="text-gray-500 text-center py-8">Pilih topik di atas untuk melihat konten</p>
+                </div>
+            `;
+            
+            // Animate content
+            anime({
+                targets: '#tutorial-content',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                duration: 500,
+                easing: 'easeOutQuad'
+            });
+        }
+
+        // Show specific topic
+        function showTopic(categoryKey, topicIndex) {
+            const category = tutorialCategories[categoryKey];
+            const topic = category.topics[topicIndex];
+            if (!topic) return;
+            
+            // Update active tab
+            document.querySelectorAll('.concept-tab').forEach((tab, index) => {
+                tab.classList.toggle('active', index === topicIndex);
+            });
+            
+            const contentContainer = document.getElementById('topic-content');
+            contentContainer.innerHTML = `
+                <div class="bg-white rounded-lg p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">${topic.title}</h3>
+                    ${topic.content}
+                </div>
+            `;
+            
+            // Animate topic content
+            anime({
+                targets: '#topic-content',
+                opacity: [0, 1],
+                translateY: [10, 0],
+                duration: 400,
+                easing: 'easeOutQuad'
+            });
+        }
+
+        // Search tutorial
+        function searchTutorial() {
+            const searchTerm = document.getElementById('search-tutorial').value.toLowerCase();
+            if (!searchTerm) return;
+            
+            const results = [];
+            Object.entries(tutorialCategories).forEach(([categoryKey, category]) => {
+                category.topics.forEach((topic, topicIndex) => {
+                    if (topic.title.toLowerCase().includes(searchTerm) || 
+                        topic.content.toLowerCase().includes(searchTerm)) {
+                        results.push({
+                            categoryKey,
+                            topicIndex,
+                            category: category.title,
+                            topic: topic.title
+                        });
+                    }
+                });
+            });
+            
+            if (results.length > 0) {
+                const firstResult = results[0];
+                showTutorialContent(firstResult.categoryKey);
+                setTimeout(() => {
+                    showTopic(firstResult.categoryKey, firstResult.topicIndex);
+                }, 300);
+            }
+        }
+
+        // Initialize Pyodide
+        async function initializePyodide() {
+            try {
+                pyodide = await loadPyodide();
+                console.log('Pyodide loaded successfully');
+            } catch (error) {
+                console.error('Failed to load Pyodide:', error);
+            }
+        }
+
+        // Run Python code
+        async function runCode(button) {
+            if (!pyodide) {
+                alert('Python compiler belum siap. Tunggu beberapa saat...');
+                return;
+            }
+            
+            const codeExample = button.parentElement;
+            const code = codeExample.querySelector('code').textContent;
+            const outputDiv = codeExample.nextElementSibling;
+            
+            try {
+                button.textContent = '⏳ Running...';
+                button.disabled = true;
+                
+                outputDiv.style.display = 'block';
+                outputDiv.innerHTML = '<div class="text-yellow-400">⏳ Menjalankan kode...</div>';
+                
+                // Capture stdout
+                let output = '';
+                pyodide.setStdout({
+                    write: (text) => {
+                        output += text;
+                        outputDiv.innerHTML = `<div class="text-green-400">${escapeHtml(output)}</div>`;
+                    }
+                });
+                
+                // Execute code
+                await pyodide.runPythonAsync(code);
+                
+                if (!output) {
+                    outputDiv.innerHTML = '<div class="text-gray-500">✅ Kode berhasil dijalankan (tidak ada output)</div>';
+                }
+                
+            } catch (error) {
+                outputDiv.style.display = 'block';
+                outputDiv.innerHTML = `<div class="text-red-400">Error: ${escapeHtml(error.message)}</div>`;
+            } finally {
+                button.textContent = '▶ Run';
+                button.disabled = false;
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
