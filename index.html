@@ -150,6 +150,7 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- Stats Dashboard -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <!-- Stats cards... (tidak berubah) -->
             <div class="bg-white rounded-lg p-6 shadow-lg border border-cyan-200">
                 <div class="flex items-center justify-between">
                     <div>
@@ -208,8 +209,16 @@
                 </div>
             </div>
 
-            <!-- Code Editor -->
-            <div class="lg:col-span-2">
+            <!-- PERUBAHAN DI SINI: Kolom tengah sekarang berisi Deskripsi + Editor -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- KOTAK BARU: Problem Detail -->
+                <div id="problem-detail-container" class="bg-white rounded-lg shadow-lg p-6 hidden">
+                    <h3 id="problem-detail-title" class="text-xl font-bold text-slate-800 mb-2"></h3>
+                    <p id="problem-detail-description" class="text-gray-700"></p>
+                </div>
+                
+                <!-- Code Editor (tidak berubah) -->
                 <div class="editor-container p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold text-white" id="editor-title">Code Editor</h3>
@@ -241,7 +250,7 @@
                 </div>
             </div>
 
-            <!-- Output Panel -->
+            <!-- Output Panel (tidak berubah) -->
             <div class="lg:col-span-1">
                 <div class="output-panel p-6">
                     <h3 class="text-lg font-semibold text-white mb-4">Output</h3>
@@ -257,7 +266,7 @@
             </div>
         </div>
 
-        <!-- Achievement Section -->
+        <!-- Achievement Section (tidak berubah) -->
         <div class="bg-white rounded-lg shadow-lg p-8 mb-12">
             <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">Prestasi Belajar</h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="achievements-grid">
@@ -265,7 +274,7 @@
             </div>
         </div>
 
-        <!-- Quick Tutorial -->
+        <!-- Quick Tutorial (tidak berubah) -->
         <div class="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg p-8 text-white">
             <div class="max-w-4xl mx-auto text-center">
                 <h3 class="text-2xl font-bold mb-4">Butuh Bantuan?</h3>
@@ -279,7 +288,7 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer (tidak berubah) -->
     <footer class="bg-slate-800 text-white py-8 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-gray-400">
@@ -288,7 +297,7 @@
         </div>
     </footer>
 
-    <!-- Pyodide for Python execution -->
+    <!-- Pyodide for Python execution (tidak berubah) -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
     
     <script src="main.js"></script>
