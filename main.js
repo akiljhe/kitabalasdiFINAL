@@ -623,22 +623,43 @@ async function runCode() {
         // (DIPERBARUI) setStdout akan langsung menulis ke panel output
         pyodide.setStdout({
             write: (text) => {
-                output += text;
+                // (PERBAIKAN) Cek jika 'text' adalah string atau array kode karakter
+                let textAsString;
+                if (typeof text === 'string') {
+                    textAsString = text;
+                } else if (text instanceof Uint8Array || Array.isArray(text)) {
+                    // Jika ini adalah byte array (Uint8Array) atau array angka,
+                    // kita ubah kembali menjadi string
+                    textAsString = new TextDecoder().decode(text);
+                } else {
+                    // Fallback jika ada tipe data lain
+                    textAsString = String(text);
+                }
+
+                output += textAsString;
                 // Tulis output ke div secara real-time
-                // Gunakan 'text-green-400' karena ini adalah output standar
                 outputDiv.innerHTML = `<div class="text-green-400">${escapeHtml(output)}</div>`;
-                return text.length; // (PERBAIKAN) Pyodide wajib menerima return angka
+                return textAsString.length; // Kembalikan panjang string
             }
         });
         
         // (BARU) setStderr juga harus ditangani untuk menangkap error Python
         pyodide.setStderr({
             write: (text) => {
-                output += text; // Tambahkan ke output untuk logging
+                // (PERBAIKAN) Lakukan hal yang sama untuk error
+                let textAsString;
+                if (typeof text === 'string') {
+                    textAsString = text;
+                } else if (text instanceof Uint8Array || Array.isArray(text)) {
+                    textAsString = new TextDecoder().decode(text);
+                } else {
+                    textAsString = String(text);
+                }
+
+                output += textAsString; // Tambahkan ke output untuk logging
                 // Tulis error ke div secara real-time
-                // Gunakan 'text-red-400' karena ini adalah error
                 outputDiv.innerHTML = `<div class="text-red-400">${escapeHtml(output)}</div>`;
-                return text.length; // (PERBAIKAN) Pyodide wajib menerima return angka
+                return textAsString.length; // Kembalikan panjang string
             }
         });
 
