@@ -3,7 +3,10 @@ let pyodide = null;
 let currentProblem = null;
 let userProgress = JSON.parse(localStorage.getItem('pythonProgress') || '{}');
 
-// Problem definitions
+// (BARU) Variabel global untuk menampung instance CodeMirror
+let codeEditorInstance = null;
+
+// Problem definitions (tidak berubah)
 const problems = [
     {
         id: 1,
@@ -11,7 +14,7 @@ const problems = [
         difficulty: "beginner",
         description: "Buat program untuk menentukan apakah sebuah bilangan: 'Odd' jika ganjil, 'Even' jika genap, 'Zero' jika 0",
         template: `# Odd, Even, or Zero
-number = int(input("Masukkan bilangan: "))
+number = int(input())
 
 # Tulis kode Anda di sini
 if number == 0:
@@ -32,7 +35,7 @@ else:
         difficulty: "beginner",
         description: "Input nilai ujian (0-100). Jika tidak valid, cetak 'Invalid'. Jika valid, tentukan grade A-E",
         template: `# Grade Classification
-nilai = int(input("Masukkan nilai: "))
+nilai = int(input())
 
 # Validasi dan tentukan grade
 if nilai < 0 or nilai > 100:
@@ -59,7 +62,7 @@ else:
         difficulty: "beginner",
         description: "Cetak angka dari 1 sampai N, tetapi lewati setiap bilangan kelipatan 4",
         template: `# Print Numbers With Step
-N = int(input("Masukkan N: "))
+N = int(input())
 
 # Cetak angka kecuali kelipatan 4
 for i in range(1, N + 1):
@@ -75,7 +78,7 @@ for i in range(1, N + 1):
         difficulty: "beginner",
         description: "Cetak kata 'Python' sebanyak N kali dengan nomor urut di depan",
         template: `# Repeat Word
-N = int(input("Masukkan N: "))
+N = int(input())
 
 # Cetak Python dengan nomor urut
 for i in range(1, N + 1):
@@ -90,7 +93,7 @@ for i in range(1, N + 1):
         difficulty: "beginner",
         description: "Cetak semua angka dari 1 sampai N yang merupakan kelipatan 3 atau 5",
         template: `# Multiples of 3 and 5
-N = int(input("Masukkan N: "))
+N = int(input())
 
 # Cetak kelipatan 3 atau 5
 for i in range(1, N + 1):
@@ -108,7 +111,7 @@ for i in range(1, N + 1):
         template: `# Square & Diagonal
 import math
 
-S = int(input("Masukkan sisi persegi: "))
+S = int(input())
 
 # Hitung luas, keliling, dan diagonal
 luas = S * S
@@ -128,7 +131,7 @@ print(f"Diagonal: {diagonal:.2f}")`,
         difficulty: "intermediate",
         description: "Diberikan dua angka A dan B, bandingkan A%B dan B%A, cetak mana yang lebih besar",
         template: `# Modulo Comparison
-A, B = map(int, input("Masukkan A dan B: ").split())
+A, B = map(int, input().split())
 
 # Hitung modulo
 mod1 = A % B
@@ -154,8 +157,8 @@ else:
         template: `# Power or Root
 import math
 
-X = int(input("Masukkan X: "))
-C = input("Masukkan perintah (pow/root): ")
+X = int(input())
+C = input()
 
 if C == "pow":
     print(X ** 2)
@@ -174,7 +177,7 @@ else:
         difficulty: "intermediate",
         description: "Cetak angka 1-N, jika kelipatan 5 cetak 'Fizz', selainnya cetak angka",
         template: `# Fizz for Five
-N = int(input("Masukkan N: "))
+N = int(input())
 
 # Cetak angka atau Fizz
 for i in range(1, N + 1):
@@ -192,7 +195,7 @@ for i in range(1, N + 1):
         difficulty: "intermediate",
         description: "Diberikan 3 angka, tentukan angka terbesar tanpa menggunakan fungsi max()",
         template: `# Maximum of Three
-a, b, c = map(int, input("Masukkan 3 angka: ").split())
+a, b, c = map(int, input().split())
 
 # Tentukan nilai maksimum
 maks = a
@@ -213,7 +216,7 @@ print(maks)`,
         difficulty: "intermediate",
         description: "Hitung total semua angka genap dari 1 sampai N",
         template: `# Sum of Even Numbers
-N = int(input("Masukkan N: "))
+N = int(input())
 
 # Hitung jumlah angka genap
 total = 0
@@ -233,7 +236,7 @@ print(total)`,
         difficulty: "advanced",
         description: "Cetak pola segitiga menggunakan karakter * dengan tinggi N",
         template: `# Star Pattern
-N = int(input("Masukkan tinggi segitiga: "))
+N = int(input())
 
 # Cetak pola bintang
 for i in range(1, N + 1):
@@ -248,7 +251,7 @@ for i in range(1, N + 1):
         difficulty: "advanced",
         description: "Hitung berapa banyak angka dari 1 sampai N yang merupakan kelipatan 2 dan 7",
         template: `# Count Multiples
-N = int(input("Masukkan N: "))
+N = int(input())
 
 # Hitung kelipatan 14 (kelipatan 2 dan 7)
 count = 0
@@ -270,7 +273,7 @@ print(count)`,
         template: `# Valid Usernames
 import re
 
-N = int(input("Masukkan jumlah username: "))
+N = int(input())
 valid_usernames = []
 
 # Pola regex untuk username valid
@@ -299,7 +302,7 @@ else:
         template: `# Extract Numbers
 import re
 
-N = int(input("Masukkan jumlah baris: "))
+N = int(input())
 numbers = []
 
 for _ in range(N):
@@ -323,7 +326,7 @@ if numbers:
     }
 ];
 
-// Achievements system
+// Achievements system (tidak berubah)
 const achievements = [
     { id: 'first_code', name: 'First Code', description: 'Menulis kode pertama', icon: '🎯', unlocked: false },
     { id: 'problem_solver', name: 'Problem Solver', description: 'Menyelesaikan 5 soal', icon: '🧩', unlocked: false },
@@ -369,7 +372,7 @@ function saveUserProgress() {
 // Load problems into sidebar
 function loadProblems() {
     const container = document.getElementById('problem-list');
-    if (!container) return; // Pastikan elemen ada
+    if (!container) return; 
     container.innerHTML = '';
     
     problems.forEach(problem => {
@@ -395,18 +398,16 @@ function loadProblems() {
     });
 }
 
-// Select a problem (DIPERBARUI)
+// Select a problem (DIPERBARUI untuk CodeMirror)
 function selectProblem(problemId) {
     currentProblem = problems.find(p => p.id === problemId);
-    if (currentProblem) {
-        // Muat template ke editor
-        document.getElementById('code-editor').value = currentProblem.template;
+    if (currentProblem && codeEditorInstance) { // Pastikan CodeMirror sudah siap
+        // (BARU) Gunakan .setValue() untuk CodeMirror
+        codeEditorInstance.setValue(currentProblem.template);
         
-        // (BARU) Tampilkan deskripsi soal
         document.getElementById('problem-title').textContent = currentProblem.title;
         document.getElementById('problem-description').textContent = currentProblem.description;
         
-        // (BARU) Kosongkan input dan output sebelumnya
         document.getElementById('code-input').value = '';
         clearOutput();
 
@@ -414,20 +415,24 @@ function selectProblem(problemId) {
     }
 }
 
-// Load template code
+// Load template code (DIPERBARUI untuk CodeMirror)
 function loadTemplate() {
-    if (currentProblem) {
-        document.getElementById('code-editor').value = currentProblem.template;
+    if (currentProblem && codeEditorInstance) {
+        // (BARU) Gunakan .setValue() untuk CodeMirror
+        codeEditorInstance.setValue(currentProblem.template);
         showNotification('Template dimuat', 'info');
     } else {
         showNotification('Pilih soal terlebih dahulu', 'warning');
     }
 }
 
-// Clear editor
+// Clear editor (DIPERBARUI untuk CodeMirror)
 function clearEditor() {
-    document.getElementById('code-editor').value = '';
-    showNotification('Editor dikosongkan', 'info');
+    if (codeEditorInstance) {
+        // (BARU) Gunakan .setValue() untuk CodeMirror
+        codeEditorInstance.setValue('');
+        showNotification('Editor dikosongkan', 'info');
+    }
 }
 
 // Clear output
@@ -435,11 +440,17 @@ function clearOutput() {
     document.getElementById('output-display').innerHTML = '<div class="text-gray-500">Output akan muncul di sini...</div>';
 }
 
-// Run Python code (DIPERBARUI)
+// Run Python code (DIPERBARUI untuk CodeMirror)
 async function runCode() {
-    const code = document.getElementById('code-editor').value;
+    if (!codeEditorInstance) {
+        showNotification('Editor kode belum siap.', 'error');
+        return;
+    }
+
+    // (BARU) Gunakan .getValue() untuk CodeMirror
+    const code = codeEditorInstance.getValue();
     const outputDiv = document.getElementById('output-display');
-    const inputText = document.getElementById('code-input').value; // (BARU) Ambil teks dari kotak input
+    const inputText = document.getElementById('code-input').value; 
     
     if (!code.trim()) {
         showNotification('Kode tidak boleh kosong', 'warning');
@@ -454,12 +465,10 @@ async function runCode() {
     try {
         outputDiv.innerHTML = '<div class="text-yellow-400">⏳ Menjalankan kode...</div>';
         
-        // (BARU) Atur stdin untuk membaca dari variabel inputText
         pyodide.setStdin({
             stdin: () => inputText
         });
 
-        // Capture stdout
         let output = '';
         pyodide.setStdout({
             write: (text) => {
@@ -467,26 +476,20 @@ async function runCode() {
             }
         });
         
-        // (BARU) Bersihkan buffer stdout sebelum eksekusi
         pyodide.runPython("import sys; sys.stdout.flush()");
 
-        // Execute code
         await pyodide.runPythonAsync(code);
         
-        // (BARU) Tampilkan output setelah semua kode selesai
         outputDiv.innerHTML = `<div class="text-green-400">${escapeHtml(output)}</div>`;
 
         if (!output.trim()) {
             outputDiv.innerHTML = '<div class="text-gray-500">✅ Kode berhasil dijalankan (tidak ada output)</div>';
         }
 
-        // Check if there's a current problem to test
         if (currentProblem) {
-            // (CATATAN: testSolution masih simulasi, perlu implementasi nyata)
             testSolution(code, output);
         }
         
-        // Unlock first code achievement
         if (!userProgress.firstCode) {
             userProgress.firstCode = true;
             unlockAchievement('first_code');
@@ -505,23 +508,18 @@ function testSolution(code, output) {
     let passedTests = 0;
     const totalTests = currentProblem.testCases.length;
     
-    // Simple test checking (in real implementation, you'd run each test case)
-    // Ini masih simulasi, untuk implementasi nyata, Anda perlu
-    // menjalankan pyodide.runPythonAsync untuk setiap test case
-    // dengan input yang berbeda dan membandingkan outputnya.
-    const isCorrect = Math.random() > 0.3; // Simulasi test results
+    // Simulasi test results (masih sama)
+    const isCorrect = Math.random() > 0.3; 
     
     if (isCorrect) {
-        // Mark problem as completed
         if (!userProgress.completed) userProgress.completed = [];
         if (!userProgress.completed.includes(currentProblem.id)) {
             userProgress.completed.push(currentProblem.id);
             showNotification(`Selamat! Soal ${currentProblem.title} berhasil diselesaikan!`, 'success');
             
-            // Check for achievements
             checkAchievements();
             updateStats();
-            loadProblems(); // Refresh problem list
+            loadProblems(); 
         }
     }
     
@@ -562,7 +560,7 @@ function unlockAchievement(achievementId) {
 // Load achievements display
 function loadAchievements() {
     const container = document.getElementById('achievements-grid');
-    if (!container) return; // Pastikan elemen ada
+    if (!container) return; 
     container.innerHTML = '';
     
     achievements.forEach(achievement => {
@@ -587,7 +585,6 @@ function updateStats() {
     const successRate = totalProblems > 0 ? Math.round((completedCount / totalProblems) * 100) : 0;
     const achievementCount = achievements.filter(a => userProgress[a.id] || a.unlocked).length;
     
-    // Pastikan elemen ada sebelum diupdate
     const completedEl = document.getElementById('completed-count');
     const successEl = document.getElementById('success-rate');
     const achievementEl = document.getElementById('achievement-count');
@@ -612,12 +609,10 @@ function showNotification(message, type = 'info') {
     
     document.body.appendChild(notification);
     
-    // Animate in
     setTimeout(() => {
         notification.classList.remove('translate-x-full');
     }, 100);
     
-    // Remove after 3 seconds
     setTimeout(() => {
         notification.classList.add('translate-x-full');
         setTimeout(() => {
@@ -632,18 +627,11 @@ function showNotification(message, type = 'info') {
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
-    return div.innerHTML.replace(/\n/g, '<br>'); // Ganti newline dengan <br>
+    return div.innerHTML.replace(/\n/g, '<br>'); 
 }
 
-// Initialize syntax highlighting (basic implementation)
-function highlightSyntax(code) {
-    // This is a basic implementation. For production, use a proper syntax highlighter
-    return code
-        .replace(/\b(def|if|elif|else|for|while|import|from|return|class|try|except)\b/g, '<span class="syntax-keyword">$1</span>')
-        .replace(/(["\'])([^"\']*)\1/g, '<span class="syntax-string">$1$2$1</span>')
-        .replace(/\b(\d+)\b/g, '<span class="syntax-number">$1</span>')
-        .replace(/(#.*$)/gm, '<span class="syntax-comment">$1</span>');
-}
+// (HAPUS) Fungsi highlightSyntax tidak diperlukan lagi
+// CodeMirror menanganinya secara otomatis
 
 // Add some interactive animations
 document.addEventListener('DOMContentLoaded', function() {
@@ -657,25 +645,5 @@ document.addEventListener('DOMContentLoaded', function() {
         easing: 'easeOutQuad'
     });
     
-    // Add hover effects to problem cards
-    // Perlu dipastikan ini dipanggil setelah loadProblems
-    document.querySelectorAll('.problem-card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            anime({
-                targets: this,
-                scale: 1.02,
-                duration: 200,
-                easing: 'easeOutQuad'
-            });
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            anime({
-                targets: this,
-                scale: 1,
-                duration: 200,
-                easing: 'easeOutQuad'
-            });
-        });
-    });
+    // ... (Animasi hover problem-card bisa ditambahkan kembali di sini jika diinginkan)
 });
