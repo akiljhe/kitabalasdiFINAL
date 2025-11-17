@@ -597,6 +597,9 @@ async function runCode() {
     try {
         outputDiv.innerHTML = '<div class="text-yellow-400">⏳ Menjalankan kode...</div>';
         
+        // (BARU) Siapkan variabel output
+        let output = ''; 
+
         // (BARU) Penanganan input multi-baris yang lebih baik
         const inputLines = inputText.split('\n');
         let lineIndex = 0;
@@ -617,20 +620,30 @@ async function runCode() {
             }
         });
 
-        let output = '';
+        // (DIPERBARUI) setStdout akan langsung menulis ke panel output
         pyodide.setStdout({
             write: (text) => {
                 output += text;
+                // Tulis output ke div secara real-time
+                // Gunakan 'text-green-400' karena ini adalah output standar
+                outputDiv.innerHTML = `<div class="text-green-400">${escapeHtml(output)}</div>`;
             }
         });
         
-        // Hapus flush, mungkin tidak perlu dan bisa jadi sumber masalah
-        // pyodide.runPython("import sys; sys.stdout.flush()");
+        // (BARU) setStderr juga harus ditangani untuk menangkap error Python
+        pyodide.setStderr({
+            write: (text) => {
+                output += text; // Tambahkan ke output untuk logging
+                // Tulis error ke div secara real-time
+                // Gunakan 'text-red-400' karena ini adalah error
+                outputDiv.innerHTML = `<div class="text-red-400">${escapeHtml(output)}</div>`;
+            }
+        });
 
         await pyodide.runPythonAsync(code);
         
-        outputDiv.innerHTML = `<div class="text-green-400">${escapeHtml(output)}</div>`;
-
+        // (DISESUAIKAN) Cek ini masih valid jika program berhasil tapi tidak mencetak apa-apa
+        // Kita cek 'output' BUKAN 'outputDiv.innerHTML'
         if (!output.trim()) {
             outputDiv.innerHTML = '<div class="text-gray-500">✅ Kode berhasil dijalankan (tidak ada output)</div>';
         }
