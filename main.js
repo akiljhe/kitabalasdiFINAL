@@ -627,6 +627,7 @@ async function runCode() {
                 // Tulis output ke div secara real-time
                 // Gunakan 'text-green-400' karena ini adalah output standar
                 outputDiv.innerHTML = `<div class="text-green-400">${escapeHtml(output)}</div>`;
+                return text.length; // (PERBAIKAN) Pyodide wajib menerima return angka
             }
         });
         
@@ -637,6 +638,7 @@ async function runCode() {
                 // Tulis error ke div secara real-time
                 // Gunakan 'text-red-400' karena ini adalah error
                 outputDiv.innerHTML = `<div class="text-red-400">${escapeHtml(output)}</div>`;
+                return text.length; // (PERBAIKAN) Pyodide wajib menerima return angka
             }
         });
 
