@@ -1,1 +1,341 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Learning Platform - Compiler & Latihan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- (BARU) CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .code-font { font-family: 'JetBrains Mono', monospace; }
+        .hero-bg { background-image: url('resources/hero-coding.jpg'); }
+        .pattern-bg { background-image: url('resources/bg-pattern.svg'); }
+        
+        .editor-container {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .output-panel {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+        
+        .problem-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(6, 182, 212, 0.15);
+            border-color: #06b6d4;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #06b6d4;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #06b6d4;
+            border-radius: 1px;
+        }
+        
+        .typing-animation {
+            border-right: 2px solid #06b6d4;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: #06b6d4; }
+            51%, 100% { border-color: transparent; }
+        }
+        
+        /* (HAPUS) Style .code-editor lama dihapus */
+
+        .code-input {
+            background: #1e293b;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            outline: none;
+            resize: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* (BARU) Style untuk CodeMirror */
+        .CodeMirror {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            border-radius: 8px; /* Sesuaikan dengan style .code-editor lama */
+            height: 320px; /* Sesuaikan dengan h-80 */
+        }
+        
+        .achievement-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 pattern-bg min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <img src="resources/python-logo.png" alt="Python Logo" class="w-8 h-8">
+                    <span class="text-xl font-bold text-slate-800">Python Learning</span>
+                </div>
+                <div class="flex space-x-8">
+                    <a href="index.html" class="nav-link active text-slate-700 font-medium">Compiler</a>
+                    <a href="problems.html" class="nav-link text-slate-700 font-medium">Latihan</a>
+                    <a href="tutorial.html" class="nav-link text-slate-700 font-medium">Tutorial</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg bg-cover bg-center py-16 relative">
+        <div class="absolute inset-0 bg-slate-900/60"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                <span class="typing-animation code-font">print("Hello, Python!")</span>
+            </h1>
+            <p class="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+                Belajar Python dengan compiler interaktif dan 15+ latihan pemrograman. 
+                Kode, uji, dan tingkatkan kemampuan coding Anda secara real-time.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="scrollToEditor()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                    Mulai Coding
+                </button>
+                <a href="problems.html" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                    Lihat Latihan
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Stats Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <!-- Stats cards... (tidak berubah) -->
+            <div class="bg-white rounded-lg p-6 shadow-lg border border-cyan-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Problems</p>
+                        <p class="text-2xl font-bold text-slate-800">15</p>
+                    </div>
+                    <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                        <span class="text-cyan-600 text-xl">🐍</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-6 shadow-lg border border-orange-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Completed</p>
+                        <p class="text-2xl font-bold text-slate-800" id="completed-count">0</p>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <span class="text-orange-600 text-xl">✅</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-6 shadow-lg border border-emerald-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Success Rate</p>
+                        <p class="text-2xl font-bold text-slate-800" id="success-rate">0%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+                        <span class="text-emerald-600 text-xl">📈</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-6 shadow-lg border border-purple-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Achievements</p>
+                        <p class="text-2xl font-bold text-slate-800" id="achievement-count">0</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <span class="text-purple-600 text-xl">🏆</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Compiler Interface -->
+        <div id="editor-section" class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
+            <!-- Problem Selector -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-4">Daftar Latihan</h3>
+                    <div class="space-y-2" id="problem-list">
+                        <!-- Problems will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Editor & Problem Description -->
+            <div class="lg:col-span-2">
+                <!-- Problem Description Panel -->
+                <div id="problem-description-panel" class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <h3 id="problem-title" class="text-xl font-semibold text-slate-800 mb-2">Selamat Datang!</h3>
+                    <p id="problem-description" class="text-gray-600 mb-4">
+                        Pilih soal dari daftar di sebelah kiri untuk memulai. 
+                        Deskripsi soal akan muncul di sini.
+                    </p>
+                    <!-- (BARU) Container untuk detail soal -->
+                    <div id="problem-details-container" class="space-y-4">
+                        <!-- Konten ini akan diisi oleh main.js -->
+                    </div>
+                </div>
+
+                <!-- Code Editor -->
+                <div class="editor-container p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-white">Code Editor</h3>
+                        <div class="flex space-x-2">
+                            <button onclick="loadTemplate()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1 rounded text-sm transition-colors">
+                                Template
+                            </button>
+                            <button onclick="clearEditor()" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm transition-colors">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                    <!-- (BARU) Textarea ini akan "diambil alih" oleh CodeMirror -->
+                    <textarea 
+                        id="code-editor" 
+                        class="w-full"
+                        placeholder=""
+                        spellcheck="false"
+                    ></textarea>
+                    <div class="flex justify-between items-center mt-4">
+                         <!-- (HAPUS) Line counter lama dihapus -->
+                        <div></div> <!-- Placeholder agar tombol Run tetap di kanan -->
+                        <div class="flex space-x-2">
+                            <button onclick="runCode()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                                ▶ Run Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input/Output Panel -->
+            <div class="lg:col-span-1">
+                <!-- Input Panel -->
+                <div class="bg-slate-700 rounded-lg p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Input Data</h3>
+                    <textarea 
+                        id="code-input" 
+                        class="code-input w-full h-24 p-4 rounded-lg"
+                        placeholder=""
+                        spellcheck="false"
+                    ></textarea>
+                </div>
+                
+                <!-- Output Panel -->
+                <div class="output-panel p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Output</h3>
+                    <div id="output-display" class="bg-black/50 rounded-lg p-4 h-80 overflow-y-auto text-sm code-font text-green-400">
+                        <div class="text-gray-500">Output akan muncul di sini...</div>
+                    </div>
+                    <div class="mt-4">
+                        <button onclick="clearOutput()" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm transition-colors">
+                            Clear Output
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement Section -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-12">
+            <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">Prestasi Belajar</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="achievements-grid">
+                <!-- Achievements will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Quick Tutorial -->
+        <div class="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg p-8 text-white">
+            <div class="max-w-4xl mx-auto text-center">
+                <h3 class="text-2xl font-bold mb-4">Butuh Bantuan?</h3>
+                <p class="text-lg mb-6">
+                    Pelajari konsep Python dasar dan teknik pemecahan masalah dengan tutorial interaktif kami.
+                </p>
+                <a href="tutorial.html" class="bg-white text-cyan-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+                    Lihat Tutorial
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">
+                © 2024 Python Learning Platform. Dibuat untuk memudahkan belajar pemrograman Python.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Pyodide for Python execution -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js" defer></script>
+
+    <!-- (BARU) CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js" defer></script>
+    
+    <script src="main.js" defer></script>
+    
+    <script>
+        // (DIPINDAHKAN) Sebagian besar logika inisialisasi dipindahkan ke main.js
+        
+        // Fungsi global ini boleh tetap di sini
+        function scrollToEditor() {
+            document.getElementById('editor-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+    </script>
+</body>
+</html>
